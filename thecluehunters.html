@@ -1,0 +1,3335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>THE CLUE HUNTERS — Every Clue Matters</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts: Fredoka (Comic/Bold Display) & Nunito (Clean Readable Body) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@600;700&family=Nunito:ital,wght@0,500;0,700;0,800;1,600&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --comic-black: #18181b;
+      --comic-yellow: #ffd60a;
+      --comic-blue: #38bdf8;
+      --comic-purple: #a855f7;
+      --comic-green: #4ade80;
+      --comic-red: #ef4444;
+      --paper-bg: #fffdf7;
+    }
+
+    body {
+      font-family: 'Nunito', sans-serif;
+      background-color: #fef9c3;
+      background-image: radial-gradient(#eab308 1.5px, transparent 1.5px);
+      background-size: 22px 22px;
+      color: var(--comic-black);
+      overflow-x: hidden;
+    }
+
+    h1, h2, h3, h4, .comic-font {
+      font-family: 'Fredoka', sans-serif;
+      letter-spacing: 0.02em;
+    }
+
+    /* Thick Comic Book Borders & Tactile Shadows */
+    .comic-box {
+      border: 3.5px solid var(--comic-black);
+      box-shadow: 5px 5px 0px var(--comic-black);
+      border-radius: 1.25rem;
+      transition: transform 0.16s ease, box-shadow 0.16s ease;
+    }
+
+    .comic-box-sm {
+      border: 3px solid var(--comic-black);
+      box-shadow: 3px 3px 0px var(--comic-black);
+      border-radius: 0.9rem;
+      transition: transform 0.14s ease, box-shadow 0.14s ease;
+    }
+
+    .comic-btn {
+      border: 3px solid var(--comic-black);
+      box-shadow: 4px 4px 0px var(--comic-black);
+      border-radius: 0.95rem;
+      font-family: 'Fredoka', sans-serif;
+      transition: transform 0.12s ease, box-shadow 0.12s ease, background-color 0.15s ease;
+      cursor: pointer;
+    }
+
+    .comic-btn:hover:not(:disabled) {
+      transform: translate(-2px, -2px);
+      box-shadow: 6px 6px 0px var(--comic-black);
+    }
+
+    .comic-btn:active:not(:disabled) {
+      transform: translate(2px, 2px);
+      box-shadow: 1px 1px 0px var(--comic-black);
+    }
+
+    .comic-btn:focus-visible,
+    input:focus-visible,
+    select:focus-visible,
+    button:focus-visible {
+      outline: 4px solid #2563eb;
+      outline-offset: 3px;
+    }
+
+    /* Halftone Pattern Overlay */
+    .halftone-bg {
+      background-image: radial-gradient(rgba(24, 24, 27, 0.13) 1.5px, transparent 1.5px);
+      background-size: 10px 10px;
+    }
+
+    /* Detective Folder Tab */
+    .folder-tab {
+      position: relative;
+      border: 3.5px solid var(--comic-black);
+      border-bottom: none;
+      border-radius: 1rem 1rem 0 0;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.35rem 1.25rem;
+      font-family: 'Fredoka', sans-serif;
+      box-shadow: 4px 0px 0px var(--comic-black);
+    }
+
+    /* Comic Text Stroke Effect */
+    .comic-title-stroke {
+      -webkit-text-stroke: 2px var(--comic-black);
+      text-shadow: 4px 4px 0px var(--comic-black);
+    }
+
+    /* Tape Decoration */
+    .comic-tape {
+      background-color: rgba(254, 240, 138, 0.85);
+      border: 2px solid rgba(24, 24, 27, 0.25);
+      transform: rotate(-2deg);
+    }
+
+    /* Celebratory Confetti / Pulse Animation (Respects Reduced Motion) */
+    @keyframes popBounce {
+      0% { transform: scale(0.92); opacity: 0; }
+      70% { transform: scale(1.03); opacity: 1; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+
+    .animate-pop {
+      animation: popBounce 0.32s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
+      .comic-btn:hover:not(:disabled),
+      .comic-btn:active:not(:disabled) {
+        transform: none !important;
+      }
+    }
+
+    /* Print Styling for Teacher Guide / Worksheet Instructions */
+    @media print {
+      body {
+        background: white !important;
+      }
+      .no-print {
+        display: none !important;
+      }
+      .print-only-sheet {
+        display: block !important;
+        border: 2px solid #000 !important;
+        box-shadow: none !important;
+      }
+      #teacher-worksheet-document {
+        position: fixed;
+        inset: 0;
+        width: 100%;
+        height: auto;
+        background: white !important;
+        border: 3px solid #000 !important;
+        padding: 16px !important;
+        z-index: 9999;
+      }
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+  <!-- TOP NAVIGATION / DETECTIVE HEADER BAR -->
+  <header class="no-print sticky top-0 z-40 bg-amber-300 border-b-4 border-zinc-900 shadow-md">
+    <div class="max-w-6xl mx-auto px-4 py-3 flex flex-wrap items-center justify-between gap-3">
+      <!-- Brand / Home Trigger -->
+      <button
+        type="button"
+        onclick="requestNavigation('home')"
+        class="flex items-center gap-2.5 text-left group focus:outline-none"
+        aria-label="Go to The Clue Hunters Home Page"
+      >
+        <div class="w-11 h-11 rounded-xl bg-red-500 border-3 border-zinc-900 shadow-[3px_3px_0px_#18181b] flex items-center justify-center group-hover:rotate-6 transition-transform">
+          <!-- Magnifying Glass SVG -->
+          <svg class="w-6 h-6 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="11" cy="11" r="7"></circle>
+            <line x1="20" y1="20" x2="16.2" y2="16.2"></line>
+          </svg>
+        </div>
+        <div>
+          <span class="comic-font text-xl sm:text-2xl font-bold text-zinc-900 tracking-tight block leading-none">
+            THE CLUE HUNTERS
+          </span>
+          <span class="text-xs font-extrabold uppercase tracking-wider text-zinc-800">
+            Detective Language Toolkit
+          </span>
+        </div>
+      </button>
+
+      <!-- Quick Section Pills + Sound Toggle -->
+      <div class="flex items-center gap-2 sm:gap-3 flex-wrap">
+        <nav aria-label="Primary sections" class="hidden md:flex items-center gap-2">
+          <button type="button" onclick="requestNavigation('home')" id="nav-home" class="comic-btn px-3 py-1.5 text-sm bg-white hover:bg-amber-100">
+            Home
+          </button>
+          <button type="button" onclick="requestNavigation('glossary')" id="nav-glossary" class="comic-btn px-3 py-1.5 text-sm bg-sky-300 hover:bg-sky-200">
+            Glossary
+          </button>
+          <button type="button" onclick="requestNavigation('talk')" id="nav-talk" class="comic-btn px-3 py-1.5 text-sm bg-purple-300 hover:bg-purple-200">
+            Detective Talk
+          </button>
+          <button type="button" onclick="requestNavigation('challenge')" id="nav-challenge" class="comic-btn px-3 py-1.5 text-sm bg-green-300 hover:bg-green-200">
+            Challenge
+          </button>
+          <button type="button" onclick="requestNavigation('teacher')" id="nav-teacher" class="comic-btn px-3 py-1.5 text-sm bg-rose-300 hover:bg-rose-200">
+            Teachers
+          </button>
+        </nav>
+
+        <!-- Global Sound Toggle -->
+        <button
+          type="button"
+          id="global-sound-toggle"
+          onclick="toggleSound()"
+          class="comic-btn px-3.5 py-2 bg-white text-zinc-900 flex items-center gap-2 text-sm font-bold"
+          aria-pressed="true"
+          aria-label="Toggle sound effects"
+        >
+          <span id="sound-icon" aria-hidden="true">🔊</span>
+          <span id="sound-label">Sound: ON</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN CONTENT VIEWPORT -->
+  <main id="app-main" class="flex-grow max-w-6xl w-full mx-auto px-4 py-6 sm:py-8">
+    <!-- Dynamic Views Rendered Here -->
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="no-print bg-zinc-900 text-amber-100 border-t-4 border-zinc-900 mt-12 py-6 px-4">
+    <div class="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4 text-sm">
+      <div class="flex items-center gap-2">
+        <span class="inline-block w-3 h-3 rounded-full bg-amber-400"></span>
+        <span class="comic-font text-base text-amber-300">THE CLUE HUNTERS</span>
+        <span class="text-zinc-400">| A1+–A2 English Mystery Companion</span>
+      </div>
+      <p class="text-zinc-300 text-center sm:text-right font-semibold">
+        "Every clue matters." — Designed to accompany your physical mystery case cards.
+      </p>
+    </div>
+  </footer>
+
+  <!-- EXIT CONFIRMATION MODAL (Accessible, Keyboard Friendly) -->
+  <div
+    id="exit-modal"
+    class="fixed inset-0 z-50 hidden items-center justify-center bg-zinc-900/70 backdrop-blur-xs p-4"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="exit-modal-title"
+    aria-describedby="exit-modal-desc"
+  >
+    <div class="comic-box bg-white max-w-md w-full p-6 animate-pop relative">
+      <div class="flex items-center gap-3 mb-3">
+        <div class="w-12 h-12 rounded-full bg-amber-300 border-3 border-zinc-900 flex items-center justify-center text-2xl shrink-0" aria-hidden="true">
+          ⚠️
+        </div>
+        <h2 id="exit-modal-title" class="text-2xl font-bold text-zinc-900">
+          Leave this challenge?
+        </h2>
+      </div>
+      <p id="exit-modal-desc" class="text-zinc-800 text-base font-bold mb-6 leading-relaxed">
+        Your current quiz progress will be lost. Are you sure you want to leave?
+      </p>
+      <div class="flex flex-col sm:flex-row gap-3 justify-end">
+        <button
+          type="button"
+          id="modal-continue-btn"
+          onclick="closeExitModal()"
+          class="comic-btn px-5 py-3 bg-green-400 hover:bg-green-300 text-zinc-900 font-bold text-base w-full sm:w-auto"
+        >
+          Continue Challenge
+        </button>
+        <button
+          type="button"
+          id="modal-leave-btn"
+          onclick="confirmExitAction()"
+          class="comic-btn px-5 py-3 bg-red-400 hover:bg-red-300 text-zinc-900 font-bold text-base w-full sm:w-auto"
+        >
+          Leave Challenge
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOAST NOTIFICATION FOR COPY / STATUS -->
+  <div
+    id="toast-banner"
+    role="status"
+    aria-live="polite"
+    class="fixed bottom-5 right-5 z-50 hidden comic-box-sm bg-zinc-900 text-amber-300 px-4 py-3 font-bold text-sm items-center gap-2"
+  >
+    <span aria-hidden="true">📋</span>
+    <span id="toast-message">Copied to clipboard!</span>
+  </div>
+
+  <script>
+    /* ============================================================================
+       1. STRUCTURED SOURCE DATA (STRICTLY FROM ATTACHED GLOSSARY PDF)
+       Note: Preserves exact words, definitions, and case groupings from Glossary (1).pdf.
+       No mystery solutions are included. No unverified case titles are invented.
+    ============================================================================ */
+
+    const GLOSSARY_DATA = [
+      // General Vocabulary
+      { id: "gen-1", word: "Alibi", caseNum: 0, caseLabel: "General Vocabulary", definition: "A reason or explanation of where a person was at a certain time.", spanish: "Coartada", example: "The suspect had a strong alibi for Friday afternoon." },
+      { id: "gen-2", word: "Evidence", caseNum: 0, caseLabel: "General Vocabulary", definition: "Things or information that help you discover the truth.", spanish: "Evidencia / Pruebas", example: "We need to look closely at all the evidence on the table." },
+      { id: "gen-3", word: "Guilty", caseNum: 0, caseLabel: "General Vocabulary", definition: "Responsible for doing something wrong.", spanish: "Culpable", example: "Do you think the suspect is guilty or innocent?" },
+
+      // Case 1
+      { id: "c1-1", word: "Verdict", caseNum: 1, caseLabel: "Case 1", definition: "The final decision about whether someone did something wrong.", spanish: "Veredicto", example: "The detectives discussed the clues before giving their final verdict." },
+      { id: "c1-2", word: "Clue", caseNum: 1, caseLabel: "Case 1", definition: "A piece of information that helps solve a mystery.", spanish: "Pista", example: "Every small clue helps us understand what happened." },
+      { id: "c1-3", word: "Healthy", caseNum: 1, caseLabel: "Case 1", definition: "Good for your body and health. In good health; not sick.", spanish: "Saludable / Sano", example: "Eating fruit and vegetables is a healthy habit." },
+      { id: "c1-4", word: "Grading", caseNum: 1, caseLabel: "Case 1", definition: "Giving marks or scores to students' work.", spanish: "Calificando", example: "The teacher was grading exams in the classroom." },
+      { id: "c1-5", word: "Fork", caseNum: 1, caseLabel: "Case 1", definition: "A tool with points used for eating food.", spanish: "Tenedor", example: "Someone left a plastic fork next to the lunch box." },
+      { id: "c1-6", word: "Paper cup", caseNum: 1, caseLabel: "Case 1", definition: "A cup made of paper, used for drinking.", spanish: "Vaso de papel", example: "There was an empty paper cup on the desk." },
+      { id: "c1-7", word: "Trash can", caseNum: 1, caseLabel: "Case 1", definition: "A container where people put garbage.", spanish: "Bote de basura", example: "Look inside the trash can for any thrown-away notes." },
+
+      // Case 2
+      { id: "c2-1", word: "Mascot", caseNum: 2, caseLabel: "Case 2", definition: "A character that represents a school or a team.", spanish: "Mascota (de equipo/escuela)", example: "Our school mascot wears a bright blue costume at games." },
+      { id: "c2-2", word: "Costume", caseNum: 2, caseLabel: "Case 2", definition: "Special clothes that make you look like another person, animal, or character.", spanish: "Disfraz", example: "Someone wore a funny costume during the school event." },
+      { id: "c2-3", word: "Prankster", caseNum: 2, caseLabel: "Case 2", definition: "A person who likes playing funny tricks on other people.", spanish: "Bromista", example: "A prankster hid the megaphone before the assembly." },
+      { id: "c2-4", word: "Script", caseNum: 2, caseLabel: "Case 2", definition: "The words that actors read or say in a play or movie.", spanish: "Guion", example: "The actor practiced lines from the script." },
+      { id: "c2-5", word: "Trying on", caseNum: 2, caseLabel: "Case 2", definition: "Putting on clothes to see if they fit or look good.", spanish: "Probándose (ropa)", example: "She was trying on a jacket in the dressing room." },
+      { id: "c2-6", word: "Trail", caseNum: 2, caseLabel: "Case 2", definition: "A series of signs that show where someone went.", spanish: "Rastro", example: "We followed a trail of muddy steps down the hall." },
+      { id: "c2-7", word: "Left behind", caseNum: 2, caseLabel: "Case 2", definition: "To forget or leave something in a place.", spanish: "Dejado atrás / Olvidado", example: "The person in a hurry left behind a red scarf." },
+
+      // Case 3
+      { id: "c3-1", word: "Trail", caseNum: 3, caseLabel: "Case 3", definition: "Signs or marks that show where someone went.", spanish: "Rastro / Huellas", example: "The detective noticed a trail leading toward the exit." },
+      { id: "c3-2", word: "Glasses", caseNum: 3, caseLabel: "Case 3", definition: "Something you wear to help you see better.", spanish: "Lentes / Gafas", example: "He forgot his glasses on the table and could not read the sign." },
+      { id: "c3-3", word: "Arcade", caseNum: 3, caseLabel: "Case 3", definition: "A place where people play video games.", spanish: "Sala de videojuegos", example: "Many students went to the arcade after classes." },
+      { id: "c3-4", word: "Token", caseNum: 3, caseLabel: "Case 3", definition: "A small object used instead of money in some games.", spanish: "Ficha", example: "You need one gold token to play that machine." },
+
+      // Case 4
+      { id: "c4-1", word: "Sketchbook", caseNum: 4, caseLabel: "Case 4", definition: "A book used for drawing pictures.", spanish: "Cuaderno de dibujo", example: "She always carries a sketchbook in her backpack." },
+      { id: "c4-2", word: "Vintage", caseNum: 4, caseLabel: "Case 4", definition: "Something old that is still popular or special.", spanish: "Antiguo / Clásico (vintage)", example: "That camera is a vintage model from the 1980s." },
+      { id: "c4-3", word: "Pencil Shavings", caseNum: 4, caseLabel: "Case 4", definition: "Small pieces of wood from sharpening a pencil.", spanish: "Virutas de lápiz", example: "There were fresh pencil shavings near the art table." },
+      { id: "c4-4", word: "Empty Case", caseNum: 4, caseLabel: "Case 4", definition: "A box or container with nothing inside.", spanish: "Estuche vacío", example: "We found an empty case where the special pen belonged." },
+
+      // Case 5
+      { id: "c5-1", word: "Court", caseNum: 5, caseLabel: "Case 5", definition: "An area where people play sports like basketball or tennis.", spanish: "Cancha", example: "The students practiced passing the ball on the basketball court." },
+      { id: "c5-2", word: "Improve", caseNum: 5, caseLabel: "Case 5", definition: "To become better at something.", spanish: "Mejorar", example: "He practices every day to improve his skills." },
+      { id: "c5-3", word: "Hallway", caseNum: 5, caseLabel: "Case 5", definition: "A long space inside a building that connects rooms.", spanish: "Pasillo", example: "Footsteps echoed in the quiet school hallway." },
+      { id: "c5-4", word: "Shadow", caseNum: 5, caseLabel: "Case 5", definition: "A dark shape made when something blocks the light.", spanish: "Sombra", example: "A tall shadow appeared near the gym door." },
+      { id: "c5-5", word: "Rolling", caseNum: 5, caseLabel: "Case 5", definition: "Moving by turning over and over.", spanish: "Rodando", example: "A ball came rolling across the floor." },
+      { id: "c5-6", word: "Lying", caseNum: 5, caseLabel: "Case 5", definition: "Being in a flat position on a bed, sofa, or the floor.", spanish: "Tirado / Acostado", example: "A notebook was lying open on the floor." },
+
+      // Case 6
+      { id: "c6-1", word: "Stones", caseNum: 6, caseLabel: "Case 6", definition: "Small or large pieces of rock.", spanish: "Piedras", example: "Old grey stones marked the path in the yard." },
+      { id: "c6-2", word: "Grave", caseNum: 6, caseLabel: "Case 6", definition: "A place where a dead person is buried.", spanish: "Tumba", example: "The inscription on the old grave was from 1942." },
+      { id: "c6-3", word: "Soil", caseNum: 6, caseLabel: "Case 6", definition: "The earth where plants grow.", spanish: "Tierra / Suelo", example: "There was dark soil on the bottom of his boots." },
+      { id: "c6-4", word: "Burial", caseNum: 6, caseLabel: "Case 6", definition: "The act of putting a dead person in the ground.", spanish: "Entierro", example: "The history book described an ancient burial site." },
+      { id: "c6-5", word: "Engraved", caseNum: 6, caseLabel: "Case 6", definition: "Words or pictures cut into a hard surface.", spanish: "Grabado", example: "A date was carefully engraved into the stone." },
+
+      // Case 7
+      { id: "c7-1", word: "Meeting", caseNum: 7, caseLabel: "Case 7", definition: "A time when people come together to talk.", spanish: "Reunión", example: "The student council had a meeting at 3:00 p.m." },
+      { id: "c7-2", word: "Hidden", caseNum: 7, caseLabel: "Case 7", definition: "Something that is in a place where people cannot see it.", spanish: "Escondido / Oculto", example: "The key was hidden behind a stack of books." },
+
+      // Case 8
+      { id: "c8-1", word: "Bell", caseNum: 8, caseLabel: "Case 8", definition: "An object that makes a sound when it rings.", spanish: "Campana / Timbre", example: "When the school bell rings, classes begin." },
+      { id: "c8-2", word: "Joke", caseNum: 8, caseLabel: "Case 8", definition: "Something funny that makes people laugh.", spanish: "Broma / Chiste", example: "Everyone laughed when they realized it was a joke." },
+      { id: "c8-3", word: "Schedule", caseNum: 8, caseLabel: "Case 8", definition: "A plan that shows times for activities or events.", spanish: "Horario", example: "Check the class schedule to see who was in Room 4." },
+      { id: "c8-4", word: "Locked room", caseNum: 8, caseLabel: "Case 8", definition: "A room that you cannot enter because the door is locked.", spanish: "Habitación cerrada con llave", example: "Nobody could enter the locked room without a key." },
+
+      // Case 9
+      { id: "c9-1", word: "Updated", caseNum: 9, caseLabel: "Case 9", definition: "Changed to include new information.", spanish: "Actualizado", example: "The digital list was updated five minutes ago." },
+      { id: "c9-2", word: "Scoreboards", caseNum: 9, caseLabel: "Case 9", definition: "Boards that show the points in a game.", spanish: "Marcadores", example: "The scoreboards showed that both teams had 12 points." },
+      { id: "c9-3", word: "Rules", caseNum: 9, caseLabel: "Case 9", definition: "Instructions that tell people what they can or cannot do.", spanish: "Reglas", example: "All players must follow the rules of the competition." },
+
+      // Case 10
+      { id: "c10-1", word: "Fair", caseNum: 10, caseLabel: "Case 10", definition: "An event where people play games, see things, or have fun.", spanish: "Feria", example: "The school science fair attracted many visitors." },
+      { id: "c10-2", word: "Courtyard", caseNum: 10, caseLabel: "Case 10", definition: "An open area outside, surrounded by buildings.", spanish: "Patio interior", example: "Students ate lunch in the sunny courtyard." },
+      { id: "c10-3", word: "Almost", caseNum: 10, caseLabel: "Case 10", definition: "Very close to something, but not completely.", spanish: "Casi", example: "It was almost four o'clock when the event ended." },
+      { id: "c10-4", word: "Wall", caseNum: 10, caseLabel: "Case 10", definition: "A structure that separates or protects a space.", spanish: "Pared / Muro", example: "A colorful map was hanging on the wall." },
+      { id: "c10-5", word: "Empty", caseNum: 10, caseLabel: "Case 10", definition: "Having nothing inside.", spanish: "Vacío", example: "When we opened the box, it was completely empty." },
+      { id: "c10-6", word: "Bench", caseNum: 10, caseLabel: "Case 10", definition: "A long seat for two or more people.", spanish: "Banca / Banco", example: "Someone left a blue backpack on the wooden bench." },
+
+      // Case 11
+      { id: "c11-1", word: "Handprint", caseNum: 11, caseLabel: "Case 11", definition: "A mark made by pressing your hand against a surface.", spanish: "Huella de mano", example: "There was a blue paint handprint on the window." },
+      { id: "c11-2", word: "Mysterious", caseNum: 11, caseLabel: "Case 11", definition: "Something strange that is difficult to explain.", spanish: "Misterioso", example: "We heard a mysterious sound coming from the art room." },
+      { id: "c11-3", word: "Poster", caseNum: 11, caseLabel: "Case 11", definition: "A large piece of paper with pictures or information.", spanish: "Cartel / Póster", example: "They made a poster for the school concert." },
+      { id: "c11-4", word: "Paint", caseNum: 11, caseLabel: "Case 11", definition: "A colored liquid used to make pictures.", spanish: "Pintura", example: "Drops of green paint were on the floor." },
+      { id: "c11-5", word: "Scissors", caseNum: 11, caseLabel: "Case 11", definition: "A tool used for cutting paper or other materials.", spanish: "Tijeras", example: "Use scissors carefully when cutting cardboard." },
+      { id: "c11-6", word: "Markers", caseNum: 11, caseLabel: "Case 11", definition: "Pens with thick tips used for drawing or coloring.", spanish: "Marcadores / Plumones", example: "She wrote the title using thick black markers." },
+      { id: "c11-7", word: "Hallway", caseNum: 11, caseLabel: "Case 11", definition: "A long passage inside a building.", spanish: "Pasillo", example: "The lockers are lined up along the main hallway." },
+      { id: "c11-8", word: "Mixture", caseNum: 11, caseLabel: "Case 11", definition: "Two or more things combined together.", spanish: "Mezcla", example: "Blue and yellow paint make a green mixture." },
+
+      // Case 12
+      { id: "c12-1", word: "Silver", caseNum: 12, caseLabel: "Case 12", definition: "A shiny, gray-colored metal.", spanish: "Plata / Plateado", example: "We found a small silver key near the entrance." },
+      { id: "c12-2", word: "Returned", caseNum: 12, caseLabel: "Case 12", definition: "Gave something back to its owner.", spanish: "Devuelto / Regresado", example: "The library book was returned on Tuesday morning." },
+      { id: "c12-3", word: "Main door", caseNum: 12, caseLabel: "Case 12", definition: "The most important entrance to a building.", spanish: "Puerta principal", example: "Students enter the building through the main door." },
+      { id: "c12-4", word: "Desk", caseNum: 12, caseLabel: "Case 12", definition: "A table where people work or study.", spanish: "Escritorio", example: "The folder was sitting on top of the teacher's desk." },
+      { id: "c12-5", word: "Handprint", caseNum: 12, caseLabel: "Case 12", definition: "A mark made by putting your hand on a surface.", spanish: "Huella de mano", example: "A dusty handprint was visible on the glass door." },
+      { id: "c12-6", word: "Mixture", caseNum: 12, caseLabel: "Case 12", definition: "Two or more things put together.", spanish: "Mezcla", example: "The stain was a mixture of chalk and water." },
+
+      // Case 13
+      { id: "c13-1", word: "Archive", caseNum: 13, caseLabel: "Case 13", definition: "A place where old documents and photos are kept.", spanish: "Archivo", example: "We searched the school archive for old yearbooks." },
+      { id: "c13-2", word: "Display", caseNum: 13, caseLabel: "Case 13", definition: "To put something where people can see it.", spanish: "Exhibir / Mostrar", example: "The trophy was placed on display in the glass cabinet." },
+      { id: "c13-3", word: "Envelope", caseNum: 13, caseLabel: "Case 13", definition: "A paper cover used to carry letters or documents.", spanish: "Sobre", example: "There was a secret note inside the yellow envelope." },
+      { id: "c13-4", word: "Missing", caseNum: 13, caseLabel: "Case 13", definition: "Something that cannot be found.", spanish: "Perdido / Desaparecido", example: "One important photo was missing from the album." },
+      { id: "c13-5", word: "Destination", caseNum: 13, caseLabel: "Case 13", definition: "The place where something needs to go.", spanish: "Destino", example: "The label showed the final destination of the package." },
+      { id: "c13-6", word: "Sticker", caseNum: 13, caseLabel: "Case 13", definition: "A small piece of paper with glue on the back.", spanish: "Calcomanía / Etiqueta", example: "A bright star sticker was on the corner of the folder." },
+      { id: "c13-7", word: "Shelf", caseNum: 13, caseLabel: "Case 13", definition: "A flat surface used to hold things.", spanish: "Estante / Repisa", example: "Put the dictionaries back on the top shelf." },
+      { id: "c13-8", word: "Loose", caseNum: 13, caseLabel: "Case 13", definition: "Something that is not firmly attached or is not held in place.", spanish: "Suelto / Flojo", example: "One handle on the cabinet was loose." },
+      { id: "c13-9", word: "Delivery Log", caseNum: 13, caseLabel: "Case 13", definition: "A record of where things were delivered.", spanish: "Registro de entregas", example: "Check the delivery log to see who signed for the box." },
+      { id: "c13-10", word: "Mistake", caseNum: 13, caseLabel: "Case 13", definition: "Something done incorrectly.", spanish: "Error", example: "Writing the wrong date on the form was an honest mistake." },
+
+      // Case 14
+      { id: "c14-1", word: "Hallway", caseNum: 14, caseLabel: "Case 14", definition: "A long passage or corridor inside a building that connects different rooms.", spanish: "Pasillo", example: "The wet footprints went straight down the hallway." },
+      { id: "c14-2", word: "Footprints", caseNum: 14, caseLabel: "Case 14", definition: "Marks or shapes left behind on the ground by feet or shoes.", spanish: "Huellas (de pies/zapatos)", example: "We measured the footprints near the garden door." },
+      { id: "c14-3", word: "Display panel", caseNum: 14, caseLabel: "Case 14", definition: "A large board or flat structure used to show information, pictures, or notices.", spanish: "Panel de exhibición", example: "Student projects were pinned to the display panel." },
+      { id: "c14-4", word: "Reasoning", caseNum: 14, caseLabel: "Case 14", definition: "Using your mind to think about something logically and find a solution.", spanish: "Razonamiento", example: "Good detectives use careful reasoning to test every theory." },
+      { id: "c14-5", word: "Route", caseNum: 14, caseLabel: "Case 14", definition: "The way you go from one place to another.", spanish: "Ruta / Camino", example: "Which route did the visitor take to reach the library?" },
+      { id: "c14-6", word: "Sprinklers", caseNum: 14, caseLabel: "Case 14", definition: "Devices connected to pipes that spray water on plants or grass in a garden.", spanish: "Aspersores", example: "The garden sprinklers turn on automatically at 7:00 a.m." },
+      { id: "c14-7", word: "Recorded", caseNum: 14, caseLabel: "Case 14", definition: "Saved on a camera, video, or audio machine so you can watch or listen to it later.", spanish: "Grabado", example: "The security camera recorded everyone entering the yard." },
+
+      // Case 15
+      { id: "c15-1", word: "Auditorium", caseNum: 15, caseLabel: "Case 15", definition: "A large room or building where people gather for a performance, event, or speech.", spanish: "Auditorio", example: "All students sat in the auditorium for the talent show." },
+      { id: "c15-2", word: "Speakers", caseNum: 15, caseLabel: "Case 15", definition: "Electronic equipment that makes sound or music louder so people can hear it.", spanish: "Altavoces / Bocinas", example: "Music played loudly through the stage speakers." },
+      { id: "c15-3", word: "Mix-up", caseNum: 15, caseLabel: "Case 15", definition: "A mistake or confusion that causes a problem.", spanish: "Confusión / Enredo", example: "There was a mix-up with the audio cables before the show." },
+      { id: "c15-4", word: "Tested", caseNum: 15, caseLabel: "Case 15", definition: "Checked something to make sure it works properly and safely.", spanish: "Probado / Revisado", example: "The technician tested the microphone ten minutes early." },
+      { id: "c15-5", word: "Straight", caseNum: 15, caseLabel: "Case 15", definition: "Moving in one direction without turning or bending.", spanish: "Directo / Derecho", example: "Walk straight down the corridor to reach the stage." },
+      { id: "c15-6", word: "Instead of", caseNum: 15, caseLabel: "Case 15", definition: "In place of something else; choosing one thing and not another.", spanish: "En lugar de", example: "Track 2 played instead of the school anthem." },
+      { id: "c15-7", word: "File", caseNum: 15, caseLabel: "Case 15", definition: "A container for storing data or information on a computer.", spanish: "Archivo (digital)", example: "Someone renamed the audio file on the laptop." },
+
+      // Case 16
+      { id: "c16-1", word: "Upstairs", caseNum: 16, caseLabel: "Case 16", definition: "On a higher floor of a building.", spanish: "Arriba / En el piso de arriba", example: "The computer lab is located upstairs." },
+      { id: "c16-2", word: "Front Door", caseNum: 16, caseLabel: "Case 16", definition: "The main door at the front of a building.", spanish: "Puerta principal / Puerta delantera", example: "A visitor knocked on the front door at noon." },
+      { id: "c16-3", word: "Often", caseNum: 16, caseLabel: "Case 16", definition: "Many times.", spanish: "A menudo / Frecuentemente", example: "She often studies in the library after lunch." },
+      { id: "c16-4", word: "Still", caseNum: 16, caseLabel: "Case 16", definition: "Continuing to happen or be the same.", spanish: "Todavía / Aún", example: "The lights were still on when the janitor arrived." },
+      { id: "c16-5", word: "Chair", caseNum: 16, caseLabel: "Case 16", definition: "A piece of furniture for sitting.", spanish: "Silla", example: "He pulled a chair up to the study table." },
+      { id: "c16-6", word: "Homework", caseNum: 16, caseLabel: "Case 16", definition: "Schoolwork that students do at home.", spanish: "Tarea", example: "Don't forget to finish your English homework tonight." },
+
+      // Case 17
+      { id: "c17-1", word: "Desk", caseNum: 17, caseLabel: "Case 17", definition: "A table where people work or study.", spanish: "Escritorio", example: "The nurse kept the logbook on her desk." },
+      { id: "c17-2", word: "Nurse", caseNum: 17, caseLabel: "Case 17", definition: "A person who helps sick or injured people.", spanish: "Enfermera / Enfermero", example: "The school nurse gave him a bandage for his knee." },
+      { id: "c17-3", word: "Clock", caseNum: 17, caseLabel: "Case 17", definition: "Something that shows the time.", spanish: "Reloj (de pared)", example: "Look at the wall clock to check the exact time." },
+      { id: "c17-4", word: "Parking lot", caseNum: 17, caseLabel: "Case 17", definition: "An area where people leave their cars.", spanish: "Estacionamiento", example: "The teachers' cars were parked in the parking lot." },
+      { id: "c17-5", word: "Wheel", caseNum: 17, caseLabel: "Case 17", definition: "A round object that helps a car or bike move.", spanish: "Rueda / Llanta", example: "There was mud on the front wheel of the bicycle." },
+
+      // Case 18
+      { id: "c18-1", word: "Announcement", caseNum: 18, caseLabel: "Case 18", definition: "Information shared with a group of people.", spanish: "Anuncio", example: "The principal made an important announcement over the speaker." },
+      { id: "c18-2", word: "Meeting", caseNum: 18, caseLabel: "Case 18", definition: "A time when people come together to talk.", spanish: "Reunión", example: "Teachers attended a brief meeting before classes started." },
+      { id: "c18-3", word: "Schedule", caseNum: 18, caseLabel: "Case 18", definition: "A plan that shows times for activities or events.", spanish: "Horario", example: "According to the schedule, the bus leaves at 4:00 p.m." },
+      { id: "c18-4", word: "Strange", caseNum: 18, caseLabel: "Case 18", definition: "Something unusual or not normal.", spanish: "Extraño / Raro", example: "It was strange to see the gate open so late." },
+      { id: "c18-5", word: "Main gate", caseNum: 18, caseLabel: "Case 18", definition: "The main entrance to a place.", spanish: "Portón principal / Entrada principal", example: "The guard stood near the main gate." },
+      { id: "c18-6", word: "Flashlight", caseNum: 18, caseLabel: "Case 18", definition: "A small light that you can carry in your hand.", spanish: "Linterna", example: "He used a flashlight to look inside the dark storage closet." },
+
+      // Case 19
+      { id: "c19-1", word: "Look For", caseNum: 19, caseLabel: "Case 19", definition: "To try to find something or someone.", spanish: "Buscar", example: "Let's look for more clues near the lockers." },
+      { id: "c19-2", word: "Hallway", caseNum: 19, caseLabel: "Case 19", definition: "A long space inside a building that connects rooms.", spanish: "Pasillo", example: "Nobody was standing in the hallway at 3:15 p.m." },
+      { id: "c19-3", word: "Leave", caseNum: 19, caseLabel: "Case 19", definition: "To go away from a place.", spanish: "Irse / Salir", example: "What time did the last student leave the room?" },
+      { id: "c19-4", word: "Background", caseNum: 19, caseLabel: "Case 19", definition: "The sounds or things behind the main activity.", spanish: "Fondo (sonido o imagen)", example: "You can hear a ringing sound in the background of the recording." },
+      { id: "c19-5", word: "Noise", caseNum: 19, caseLabel: "Case 19", definition: "A sound, especially one that is loud or unpleasant.", spanish: "Ruido", example: "A sudden noise came from the second floor." },
+      { id: "c19-6", word: "Bouncing", caseNum: 19, caseLabel: "Case 19", definition: "Moving up and down after hitting a surface.", spanish: "Rebotando", example: "We heard a ball bouncing down the stairs." },
+      { id: "c19-7", word: "Squeaking", caseNum: 19, caseLabel: "Case 19", definition: "Making a short, high sound.", spanish: "Rechinando / Chillando", example: "The old door made a squeaking sound when it opened." },
+      { id: "c19-8", word: "Announcement", caseNum: 19, caseLabel: "Case 19", definition: "Information shared with a group of people.", spanish: "Anuncio", example: "Did you hear the announcement before the bell?" },
+      { id: "c19-9", word: "File", caseNum: 19, caseLabel: "Case 19", definition: "A group of information saved on a computer.", spanish: "Archivo", example: "The detective opened the audio file on the computer." },
+
+      // Case 20 (Verified title from attached card image: "THE LAST DAY OF SCHOOL")
+      { id: "c20-1", word: "Curse", caseNum: 20, caseLabel: "Case 20", definition: "Magic that makes bad things happen to someone.", spanish: "Maldición", example: "The old diary warned about a mysterious curse." },
+      { id: "c20-2", word: "Fog", caseNum: 20, caseLabel: "Case 20", definition: "A cloud close to the ground that makes it difficult to see.", spanish: "Niebla / Neblina", example: "A strange green fog appeared near the playground tree." },
+      { id: "c20-3", word: "Sleepers", caseNum: 20, caseLabel: "Case 20", definition: "People who are sleeping. Death people.", spanish: "Durmientes", example: "The diary message mentioned when the sleepers wake." }
+    ];
+
+    /* ============================================================================
+       2. DETECTIVE TALK DATA (EXACT CATEGORIES & EXPRESSIONS FROM SPECIFICATION)
+    ============================================================================ */
+    const DETECTIVE_TALK_DATA = [
+      {
+        category: "Making theories",
+        color: "bg-purple-200",
+        badgeColor: "bg-purple-500 text-white",
+        icon: "💡",
+        tip: "Use these starters when you have an idea about what happened.",
+        expressions: [
+          { text: "I think that...", usage: "I think that the suspect left at 4:00 p.m." },
+          { text: "Maybe it was...", usage: "Maybe it was an accident in the hallway." },
+          { text: "It could be...", usage: "It could be a clue from the art room." },
+          { text: "My theory is that...", usage: "My theory is that two people worked together." }
+        ]
+      },
+      {
+        category: "Analyzing evidence",
+        color: "bg-sky-200",
+        badgeColor: "bg-sky-500 text-white",
+        icon: "🔍",
+        tip: "Use these starters when pointing to a Clue Card or detail.",
+        expressions: [
+          { text: "According to the clues...", usage: "According to the clues, the door was locked." },
+          { text: "This clue tells us that...", usage: "This clue tells us that someone was here early." },
+          { text: "The evidence shows that...", usage: "The evidence shows that the cup was empty." },
+          { text: "These clues are connected.", usage: "Look at the time and the footprints—these clues are connected." }
+        ]
+      },
+      {
+        category: "Agreeing and disagreeing",
+        color: "bg-amber-200",
+        badgeColor: "bg-amber-500 text-zinc-900",
+        icon: "🤝",
+        tip: "Use polite detective language to respond to your teammates.",
+        expressions: [
+          { text: "I agree with you.", usage: "I agree with you. That alibi does not match the clock." },
+          { text: "I don't think so.", usage: "I don't think so. Look at Suspect #2's location." },
+          { text: "That's a good point.", usage: "That's a good point! We should check the schedule again." },
+          { text: "I have a different idea.", usage: "I have a different idea about why the bell rang." }
+        ]
+      },
+      {
+        category: "Asking questions",
+        color: "bg-rose-200",
+        badgeColor: "bg-rose-500 text-white",
+        icon: "❓",
+        tip: "Ask your group questions to check alibis and timelines.",
+        expressions: [
+          { text: "What do you think?", usage: "Look at Clue #2. What do you think?" },
+          { text: "Where was the suspect?", usage: "Where was the suspect when the lights went out?" },
+          { text: "What happened next?", usage: "They entered the courtyard, and what happened next?" },
+          { text: "Why do you think that?", usage: "Why do you think that the note is from yesterday?" }
+        ]
+      },
+      {
+        category: "Expressing uncertainty",
+        color: "bg-orange-200",
+        badgeColor: "bg-orange-500 text-white",
+        icon: "🤔",
+        tip: "Use these when you need more clues before deciding.",
+        expressions: [
+          { text: "I'm not sure, but...", usage: "I'm not sure, but those footprints look very small." },
+          { text: "It's possible that...", usage: "It's possible that someone forgot their glasses." },
+          { text: "Maybe...", usage: "Maybe the schedule changed this morning." },
+          { text: "We need more information.", usage: "We can't decide yet—we need more information." }
+        ]
+      },
+      {
+        category: "Presenting conclusions",
+        color: "bg-emerald-200",
+        badgeColor: "bg-emerald-500 text-white",
+        icon: "🎯",
+        tip: "Use these starters when your team is ready to share your final solution.",
+        expressions: [
+          { text: "We discovered that...", usage: "We discovered that the window was never opened." },
+          { text: "Our final theory is...", usage: "Our final theory is that the wind blew the papers." },
+          { text: "We believe this because...", usage: "We believe this because of the time on the camera." },
+          { text: "The mystery happened because...", usage: "The mystery happened because of a simple mix-up." }
+        ]
+      }
+    ];
+
+    /* ============================================================================
+       3. 20 CASE MINI-QUIZZES (EXACTLY 5 QUESTIONS PER CASE = 100 QUESTIONS TOTAL)
+       - Every single question tests vocabulary strictly from that case in Glossary (1).pdf
+         (supplemented only by General Vocabulary from page 1 where a case had < 5 words,
+         specifically Cases 3, 4, 7, 8, 9, and 20, clearly labeled).
+       - No mystery solutions are revealed.
+       - Case titles are not invented; only Case #20's verified title ("The Last Day of School")
+         from the attached card image is shown alongside the official Case numbers.
+    ============================================================================ */
+
+    const CASE_TITLES = {
+      1: "Case #1",
+      2: "Case #2",
+      3: "Case #3",
+      4: "Case #4",
+      5: "Case #5",
+      6: "Case #6",
+      7: "Case #7",
+      8: "Case #8",
+      9: "Case #9",
+      10: "Case #10",
+      11: "Case #11",
+      12: "Case #12",
+      13: "Case #13",
+      14: "Case #14",
+      15: "Case #15",
+      16: "Case #16",
+      17: "Case #17",
+      18: "Case #18",
+      19: "Case #19",
+      20: "Case #20: The Last Day of School"
+    };
+
+    const QUIZZES_DATA = {
+      1: [
+        {
+          word: "Verdict",
+          type: "Meaning",
+          prompt: "What does the word 'verdict' mean?",
+          options: [
+            "A container where people put garbage",
+            "The final decision about whether someone did something wrong",
+            "A tool with points used for eating food",
+            "A cup made of paper for drinking"
+          ],
+          correctIndex: 1,
+          explanation: "'Verdict' is the final decision about whether someone did something wrong."
+        },
+        {
+          word: "Clue",
+          type: "Context",
+          prompt: "Complete the sentence: 'The detective found a small _____ that helped solve the mystery.'",
+          options: ["fork", "trash can", "clue", "paper cup"],
+          correctIndex: 2,
+          explanation: "A 'clue' is a piece of information that helps solve a mystery."
+        },
+        {
+          word: "Healthy",
+          type: "Translation",
+          prompt: "What is the Spanish translation of 'healthy'?",
+          options: ["Saludable / Sano", "Calificando", "Veredicto", "Tenedor"],
+          correctIndex: 0,
+          explanation: "'Healthy' means good for your body and health ('saludable' or 'sano')."
+        },
+        {
+          word: "Grading",
+          type: "Definition Match",
+          prompt: "Which word means 'giving marks or scores to students' work'?",
+          options: ["Verdict", "Healthy", "Clue", "Grading"],
+          correctIndex: 3,
+          explanation: "'Grading' means giving marks or scores to students' work."
+        },
+        {
+          word: "Trash can",
+          type: "Context",
+          prompt: "Where do people put garbage in the classroom?",
+          options: ["In a paper cup", "In a trash can", "On a fork", "In a verdict"],
+          correctIndex: 1,
+          explanation: "A 'trash can' is a container where people put garbage."
+        }
+      ],
+      2: [
+        {
+          word: "Mascot",
+          type: "Meaning",
+          prompt: "What is a 'mascot'?",
+          options: [
+            "A character that represents a school or a team",
+            "The words that actors read in a play",
+            "A series of signs on the floor",
+            "Special clothes for sleeping"
+          ],
+          correctIndex: 0,
+          explanation: "A 'mascot' is a character that represents a school or a team."
+        },
+        {
+          word: "Prankster",
+          type: "Definition Match",
+          prompt: "A person who likes playing funny tricks on other people is a _____.",
+          options: ["script", "trail", "prankster", "costume"],
+          correctIndex: 2,
+          explanation: "A 'prankster' is a person who likes playing funny tricks on other people."
+        },
+        {
+          word: "Script",
+          type: "Context",
+          prompt: "Complete the sentence: 'The actors practiced reading their lines from the _____.'",
+          options: ["mascot", "script", "trail", "costume"],
+          correctIndex: 1,
+          explanation: "A 'script' contains the words that actors read or say in a play or movie."
+        },
+        {
+          word: "Trying on",
+          type: "Translation",
+          prompt: "What does 'trying on' mean in Spanish?",
+          options: ["Dejado atrás", "Rastro", "Disfraz", "Probándose (ropa)"],
+          correctIndex: 3,
+          explanation: "'Trying on' means putting on clothes to see if they fit or look good ('probándose')."
+        },
+        {
+          word: "Left behind",
+          type: "Meaning",
+          prompt: "If someone 'left behind' a bag, what did they do?",
+          options: [
+            "They forgot or left it in a place",
+            "They wore it as a costume",
+            "They wrote a script about it",
+            "They played a funny trick"
+          ],
+          correctIndex: 0,
+          explanation: "'Left behind' means to forget or leave something in a place."
+        }
+      ],
+      3: [
+        {
+          word: "Arcade",
+          type: "Meaning",
+          prompt: "What is an 'arcade'?",
+          options: [
+            "Something you wear to help you see",
+            "A place where people play video games",
+            "A small coin used for lunch",
+            "An explanation of where someone was"
+          ],
+          correctIndex: 1,
+          explanation: "An 'arcade' is a place where people play video games."
+        },
+        {
+          word: "Token",
+          type: "Definition Match",
+          prompt: "Which word means 'a small object used instead of money in some games'?",
+          options: ["Glasses", "Trail", "Token", "Alibi"],
+          correctIndex: 2,
+          explanation: "A 'token' is a small object used instead of money in some games."
+        },
+        {
+          word: "Glasses",
+          type: "Context",
+          prompt: "Complete the sentence: 'He put on his _____ so he could read the small sign clearly.'",
+          options: ["glasses", "tokens", "arcades", "trails"],
+          correctIndex: 0,
+          explanation: "'Glasses' are something you wear to help you see better."
+        },
+        {
+          word: "Trail",
+          type: "Translation",
+          prompt: "What is the Spanish translation of 'trail'?",
+          options: ["Ficha", "Sala de videojuegos", "Lentes", "Rastro / Huellas"],
+          correctIndex: 3,
+          explanation: "A 'trail' ('rastro' or 'huellas') is a series of signs or marks that show where someone went."
+        },
+        {
+          word: "Alibi",
+          type: "Context",
+          prompt: "General Detective Word: 'An _____ is an explanation of where a person was at a certain time.'",
+          options: ["arcade", "alibi", "token", "glasses"],
+          correctIndex: 1,
+          explanation: "From General Vocabulary: An 'alibi' explains where a person was at a certain time."
+        }
+      ],
+      4: [
+        {
+          word: "Sketchbook",
+          type: "Meaning",
+          prompt: "What is a 'sketchbook' used for?",
+          options: [
+            "Drawing pictures",
+            "Keeping old coins",
+            "Playing video games",
+            "Storing garbage"
+          ],
+          correctIndex: 0,
+          explanation: "A 'sketchbook' is a book used for drawing pictures."
+        },
+        {
+          word: "Vintage",
+          type: "Definition Match",
+          prompt: "Which word describes 'something old that is still popular or special'?",
+          options: ["Empty", "Healthy", "Vintage", "Guilty"],
+          correctIndex: 2,
+          explanation: "'Vintage' means something old that is still popular or special."
+        },
+        {
+          word: "Pencil Shavings",
+          type: "Context",
+          prompt: "Complete the sentence: 'After sharpening his pencil, there were small _____ on the desk.'",
+          options: ["empty cases", "pencil shavings", "sketchbooks", "tokens"],
+          correctIndex: 1,
+          explanation: "'Pencil shavings' are small pieces of wood from sharpening a pencil."
+        },
+        {
+          word: "Empty Case",
+          type: "Translation",
+          prompt: "What is the Spanish translation of 'empty case'?",
+          options: ["Cuaderno de dibujo", "Virutas de lápiz", "Algo antiguo", "Estuche vacío"],
+          correctIndex: 3,
+          explanation: "'Empty case' ('estuche vacío') means a box or container with nothing inside."
+        },
+        {
+          word: "Evidence",
+          type: "Context",
+          prompt: "General Detective Word: 'Things or information that help you discover the truth are called _____.'",
+          options: ["evidence", "pencil shavings", "vintage", "sketchbook"],
+          correctIndex: 0,
+          explanation: "From General Vocabulary: 'Evidence' refers to things or information that help discover the truth."
+        }
+      ],
+      5: [
+        {
+          word: "Court",
+          type: "Meaning",
+          prompt: "In sports, what is a 'court'?",
+          options: [
+            "A long space inside a building",
+            "An area where people play sports like basketball or tennis",
+            "A dark shape made by light",
+            "A flat bed or sofa"
+          ],
+          correctIndex: 1,
+          explanation: "A 'court' is an area where people play sports like basketball or tennis."
+        },
+        {
+          word: "Improve",
+          type: "Translation",
+          prompt: "What is the Spanish translation of 'improve'?",
+          options: ["Rodar", "Sombra", "Mejorar", "Pasillo"],
+          correctIndex: 2,
+          explanation: "'Improve' means to become better at something ('mejorar')."
+        },
+        {
+          word: "Shadow",
+          type: "Definition Match",
+          prompt: "Which word means 'a dark shape made when something blocks the light'?",
+          options: ["Shadow", "Hallway", "Court", "Rolling"],
+          correctIndex: 0,
+          explanation: "A 'shadow' is a dark shape made when something blocks the light."
+        },
+        {
+          word: "Rolling",
+          type: "Context",
+          prompt: "Complete the sentence: 'The basketball was _____ across the gym floor.'",
+          options: ["lying", "improving", "grading", "rolling"],
+          correctIndex: 3,
+          explanation: "'Rolling' means moving by turning over and over."
+        },
+        {
+          word: "Lying",
+          type: "Meaning",
+          prompt: "What does 'lying' mean in the sentence: 'The bag was lying on the floor'?",
+          options: [
+            "Moving by turning over and over",
+            "Being in a flat position on a surface or the floor",
+            "Becoming better at a sport",
+            "Blocking the light"
+          ],
+          correctIndex: 1,
+          explanation: "'Lying' means being in a flat position on a bed, sofa, or the floor."
+        }
+      ],
+      6: [
+        {
+          word: "Stones",
+          type: "Translation",
+          prompt: "What is the Spanish translation of 'stones'?",
+          options: ["Piedras", "Tierra", "Tumba", "Entierro"],
+          correctIndex: 0,
+          explanation: "'Stones' ('piedras') are small or large pieces of rock."
+        },
+        {
+          word: "Soil",
+          type: "Definition Match",
+          prompt: "Which word means 'the earth where plants grow'?",
+          options: ["Grave", "Engraved", "Soil", "Burial"],
+          correctIndex: 2,
+          explanation: "'Soil' is the earth where plants grow."
+        },
+        {
+          word: "Engraved",
+          type: "Context",
+          prompt: "Complete the sentence: 'The year 1942 was carefully _____ into the hard rock.'",
+          options: ["soil", "engraved", "stones", "burial"],
+          correctIndex: 1,
+          explanation: "'Engraved' means words or pictures cut into a hard surface."
+        },
+        {
+          word: "Grave",
+          type: "Meaning",
+          prompt: "What is a 'grave'?",
+          options: [
+            "A tool for gardening",
+            "A piece of paper with rules",
+            "A long bench in a park",
+            "A place where a dead person is buried"
+          ],
+          correctIndex: 3,
+          explanation: "A 'grave' is a place where a dead person is buried."
+        },
+        {
+          word: "Burial",
+          type: "Translation",
+          prompt: "What is the Spanish translation of 'burial'?",
+          options: ["Grabado", "Entierro", "Piedras", "Suelo"],
+          correctIndex: 1,
+          explanation: "'Burial' ('entierro') is the act of putting a dead person in the ground."
+        }
+      ],
+      7: [
+        {
+          word: "Meeting",
+          type: "Meaning",
+          prompt: "What is a 'meeting'?",
+          options: [
+            "A time when people come together to talk",
+            "A place where nobody can see you",
+            "A decision about who is guilty",
+            "A container for garbage"
+          ],
+          correctIndex: 0,
+          explanation: "A 'meeting' is a time when people come together to talk."
+        },
+        {
+          word: "Hidden",
+          type: "Definition Match",
+          prompt: "Something that is in a place where people cannot see it is _____.",
+          options: ["healthy", "updated", "hidden", "vintage"],
+          correctIndex: 2,
+          explanation: "'Hidden' describes something that is in a place where people cannot see it."
+        },
+        {
+          word: "Hidden",
+          type: "Translation",
+          prompt: "What is the Spanish translation of 'hidden'?",
+          options: ["Reunión", "Escondido / Oculto", "Culpable", "Prueba"],
+          correctIndex: 1,
+          explanation: "'Hidden' translates to 'escondido' or 'oculto'."
+        },
+        {
+          word: "Meeting",
+          type: "Context",
+          prompt: "Complete the sentence: 'All class representatives attended the afternoon _____.'",
+          options: ["hidden", "alibi", "guilty", "meeting"],
+          correctIndex: 3,
+          explanation: "A 'meeting' is a scheduled time when people come together to talk."
+        },
+        {
+          word: "Guilty",
+          type: "Context",
+          prompt: "General Detective Word: 'Responsible for doing something wrong means _____.'",
+          options: ["guilty", "hidden", "meeting", "healthy"],
+          correctIndex: 0,
+          explanation: "From General Vocabulary: 'Guilty' means responsible for doing something wrong."
+        }
+      ],
+      8: [
+        {
+          word: "Bell",
+          type: "Meaning",
+          prompt: "What is a 'bell'?",
+          options: [
+            "A plan that shows times for classes",
+            "An object that makes a sound when it rings",
+            "Something funny that makes people laugh",
+            "A door with no lock"
+          ],
+          correctIndex: 1,
+          explanation: "A 'bell' is an object that makes a sound when it rings."
+        },
+        {
+          word: "Schedule",
+          type: "Context",
+          prompt: "Complete the sentence: 'Check the _____ to see what time science class starts.'",
+          options: ["joke", "bell", "schedule", "locked room"],
+          correctIndex: 2,
+          explanation: "A 'schedule' is a plan that shows times for activities or events."
+        },
+        {
+          word: "Joke",
+          type: "Translation",
+          prompt: "What is the Spanish translation of 'joke'?",
+          options: ["Broma / Chiste", "Horario", "Campana", "Llave"],
+          correctIndex: 0,
+          explanation: "A 'joke' ('broma' or 'chiste') is something funny that makes people laugh."
+        },
+        {
+          word: "Locked room",
+          type: "Definition Match",
+          prompt: "Which phrase describes 'a room that you cannot enter because the door is locked'?",
+          options: ["Empty case", "Main gate", "Paper cup", "Locked room"],
+          correctIndex: 3,
+          explanation: "A 'locked room' is a room you cannot enter because the door is locked."
+        },
+        {
+          word: "Alibi",
+          type: "Meaning",
+          prompt: "General Detective Word: When checking a schedule, detectives verify each suspect's _____.",
+          options: ["bell", "alibi", "joke", "fork"],
+          correctIndex: 1,
+          explanation: "From General Vocabulary: An 'alibi' is an explanation of where a person was at a certain time."
+        }
+      ],
+      9: [
+        {
+          word: "Updated",
+          type: "Meaning",
+          prompt: "What does 'updated' mean?",
+          options: [
+            "Changed to include new information",
+            "Hidden behind a wall",
+            "Broken into small pieces",
+            "Written in an old diary"
+          ],
+          correctIndex: 0,
+          explanation: "'Updated' means changed to include new information."
+        },
+        {
+          word: "Scoreboards",
+          type: "Definition Match",
+          prompt: "Which word means 'boards that show the points in a game'?",
+          options: ["Rules", "Schedules", "Scoreboards", "Posters"],
+          correctIndex: 2,
+          explanation: "'Scoreboards' are boards that show the points in a game."
+        },
+        {
+          word: "Rules",
+          type: "Context",
+          prompt: "Complete the sentence: 'Every player must follow the _____ during the quiz match.'",
+          options: ["scoreboards", "rules", "updated", "stones"],
+          correctIndex: 1,
+          explanation: "'Rules' are instructions that tell people what they can or cannot do."
+        },
+        {
+          word: "Updated",
+          type: "Translation",
+          prompt: "What is the Spanish translation of 'updated'?",
+          options: ["Marcadores", "Reglas", "Escondido", "Actualizado"],
+          correctIndex: 3,
+          explanation: "'Updated' translates to 'actualizado' in Spanish."
+        },
+        {
+          word: "Evidence",
+          type: "Definition Match",
+          prompt: "General Detective Word: 'Things or information that help you discover the truth.'",
+          options: ["Evidence", "Rules", "Scoreboards", "Joke"],
+          correctIndex: 0,
+          explanation: "From General Vocabulary: 'Evidence' is things or information that help you discover the truth."
+        }
+      ],
+      10: [
+        {
+          word: "Fair",
+          type: "Meaning",
+          prompt: "In Case 10, what is a 'fair'?",
+          options: [
+            "A long seat for two people",
+            "An event where people play games, see things, or have fun",
+            "A wall around a garden",
+            "A box with nothing inside"
+          ],
+          correctIndex: 1,
+          explanation: "A 'fair' is an event where people play games, see things, or have fun."
+        },
+        {
+          word: "Courtyard",
+          type: "Definition Match",
+          prompt: "Which word means 'an open area outside, surrounded by buildings'?",
+          options: ["Wall", "Bench", "Courtyard", "Empty"],
+          correctIndex: 2,
+          explanation: "A 'courtyard' is an open area outside, surrounded by buildings."
+        },
+        {
+          word: "Almost",
+          type: "Translation",
+          prompt: "What is the Spanish translation of 'almost'?",
+          options: ["Casi", "Vacío", "Pared", "Feria"],
+          correctIndex: 0,
+          explanation: "'Almost' ('casi') means very close to something, but not completely."
+        },
+        {
+          word: "Bench",
+          type: "Context",
+          prompt: "Complete the sentence: 'Two students sat together on the wooden _____ in the yard.'",
+          options: ["wall", "fair", "almost", "bench"],
+          correctIndex: 3,
+          explanation: "A 'bench' is a long seat for two or more people."
+        },
+        {
+          word: "Empty",
+          type: "Meaning",
+          prompt: "What does 'empty' mean?",
+          options: [
+            "Surrounded by walls",
+            "Having nothing inside",
+            "Very close to finishing",
+            "Full of people"
+          ],
+          correctIndex: 1,
+          explanation: "'Empty' means having nothing inside."
+        }
+      ],
+      11: [
+        {
+          word: "Handprint",
+          type: "Meaning",
+          prompt: "What is a 'handprint'?",
+          options: [
+            "A mark made by pressing your hand against a surface",
+            "A tool used for cutting paper",
+            "A large piece of paper with pictures",
+            "A pen with a thick tip"
+          ],
+          correctIndex: 0,
+          explanation: "A 'handprint' is a mark made by pressing your hand against a surface."
+        },
+        {
+          word: "Scissors",
+          type: "Context",
+          prompt: "Complete the sentence: 'She used a pair of _____ to cut the paper shapes.'",
+          options: ["markers", "paint", "scissors", "hallway"],
+          correctIndex: 2,
+          explanation: "'Scissors' is a tool used for cutting paper or other materials."
+        },
+        {
+          word: "Mysterious",
+          type: "Translation",
+          prompt: "What is the Spanish translation of 'mysterious'?",
+          options: ["Mezcla", "Misterioso", "Cartel", "Pintura"],
+          correctIndex: 1,
+          explanation: "'Mysterious' ('misterioso') means something strange that is difficult to explain."
+        },
+        {
+          word: "Mixture",
+          type: "Definition Match",
+          prompt: "Which word means 'two or more things combined together'?",
+          options: ["Poster", "Markers", "Hallway", "Mixture"],
+          correctIndex: 3,
+          explanation: "A 'mixture' is two or more things combined together."
+        },
+        {
+          word: "Markers",
+          type: "Meaning",
+          prompt: "What are 'markers'?",
+          options: [
+            "Pens with thick tips used for drawing or coloring",
+            "Long passages inside a building",
+            "Colored liquids in jars",
+            "Marks on a glass window"
+          ],
+          correctIndex: 0,
+          explanation: "'Markers' are pens with thick tips used for drawing or coloring."
+        }
+      ],
+      12: [
+        {
+          word: "Silver",
+          type: "Meaning",
+          prompt: "What does 'silver' describe?",
+          options: [
+            "A wooden study table",
+            "A shiny, gray-colored metal",
+            "The main entrance to a school",
+            "Two liquids mixed together"
+          ],
+          correctIndex: 1,
+          explanation: "'Silver' is a shiny, gray-colored metal."
+        },
+        {
+          word: "Returned",
+          type: "Context",
+          prompt: "Complete the sentence: 'Someone _____ the missing folder to the front office.'",
+          options: ["silver", "desk", "returned", "mixture"],
+          correctIndex: 2,
+          explanation: "'Returned' means gave something back to its owner."
+        },
+        {
+          word: "Main door",
+          type: "Definition Match",
+          prompt: "Which phrase means 'the most important entrance to a building'?",
+          options: ["Main door", "Desk", "Handprint", "Silver"],
+          correctIndex: 0,
+          explanation: "The 'main door' is the most important entrance to a building."
+        },
+        {
+          word: "Desk",
+          type: "Translation",
+          prompt: "What is the Spanish translation of 'desk'?",
+          options: ["Plata", "Devuelto", "Puerta principal", "Escritorio"],
+          correctIndex: 3,
+          explanation: "A 'desk' ('escritorio') is a table where people work or study."
+        },
+        {
+          word: "Handprint",
+          type: "Context",
+          prompt: "Complete the sentence: 'The detective saw a faint _____ on the glass surface.'",
+          options: ["silver", "handprint", "returned", "main door"],
+          correctIndex: 1,
+          explanation: "A 'handprint' is a mark made by putting your hand on a surface."
+        }
+      ],
+      13: [
+        {
+          word: "Archive",
+          type: "Meaning",
+          prompt: "What is an 'archive'?",
+          options: [
+            "A place where old documents and photos are kept",
+            "A paper cover for sending letters",
+            "A small piece of paper with glue",
+            "A flat wooden shelf"
+          ],
+          correctIndex: 0,
+          explanation: "An 'archive' is a place where old documents and photos are kept."
+        },
+        {
+          word: "Envelope",
+          type: "Definition Match",
+          prompt: "Which word means 'a paper cover used to carry letters or documents'?",
+          options: ["Sticker", "Shelf", "Envelope", "Mistake"],
+          correctIndex: 2,
+          explanation: "An 'envelope' is a paper cover used to carry letters or documents."
+        },
+        {
+          word: "Destination",
+          type: "Context",
+          prompt: "Complete the sentence: 'The address label showed the package's final _____.'",
+          options: ["loose", "destination", "mistake", "archive"],
+          correctIndex: 1,
+          explanation: "'Destination' is the place where something needs to go."
+        },
+        {
+          word: "Loose",
+          type: "Meaning",
+          prompt: "What does 'loose' mean?",
+          options: [
+            "Something that cannot be found",
+            "Done completely correctly",
+            "Put where everyone can see it",
+            "Something that is not firmly attached or held in place"
+          ],
+          correctIndex: 3,
+          explanation: "'Loose' describes something that is not firmly attached or is not held in place."
+        },
+        {
+          word: "Delivery Log",
+          type: "Translation",
+          prompt: "What is the Spanish translation of 'delivery log'?",
+          options: ["Registro de entregas", "Sobre de papel", "Estante", "Perdido"],
+          correctIndex: 0,
+          explanation: "A 'delivery log' ('registro de entregas') is a record of where things were delivered."
+        }
+      ],
+      14: [
+        {
+          word: "Footprints",
+          type: "Meaning",
+          prompt: "What are 'footprints'?",
+          options: [
+            "Devices that spray water on grass",
+            "Marks or shapes left behind on the ground by feet or shoes",
+            "Boards used to show notices",
+            "Video recordings from a camera"
+          ],
+          correctIndex: 1,
+          explanation: "'Footprints' are marks or shapes left behind on the ground by feet or shoes."
+        },
+        {
+          word: "Reasoning",
+          type: "Definition Match",
+          prompt: "Which word means 'using your mind to think about something logically and find a solution'?",
+          options: ["Route", "Hallway", "Reasoning", "Sprinklers"],
+          correctIndex: 2,
+          explanation: "'Reasoning' is using your mind to think about something logically and find a solution."
+        },
+        {
+          word: "Sprinklers",
+          type: "Context",
+          prompt: "Complete the sentence: 'The grass was wet because the garden _____ turned on early.'",
+          options: ["sprinklers", "display panels", "footprints", "routes"],
+          correctIndex: 0,
+          explanation: "'Sprinklers' are devices connected to pipes that spray water on plants or grass."
+        },
+        {
+          word: "Recorded",
+          type: "Translation",
+          prompt: "What is the Spanish translation of 'recorded'?",
+          options: ["Ruta", "Razonamiento", "Pasillo", "Grabado"],
+          correctIndex: 3,
+          explanation: "'Recorded' ('grabado') means saved on a camera, video, or audio machine."
+        },
+        {
+          word: "Route",
+          type: "Meaning",
+          prompt: "What is a 'route'?",
+          options: [
+            "A flat board on a wall",
+            "The way you go from one place to another",
+            "A pipe under the grass",
+            "A pair of wet shoes"
+          ],
+          correctIndex: 1,
+          explanation: "A 'route' is the way you go from one place to another."
+        }
+      ],
+      15: [
+        {
+          word: "Auditorium",
+          type: "Meaning",
+          prompt: "What is an 'auditorium'?",
+          options: [
+            "A large room or building where people gather for a performance or event",
+            "A container for storing computer data",
+            "Equipment that makes music louder",
+            "A mistake that causes confusion"
+          ],
+          correctIndex: 0,
+          explanation: "An 'auditorium' is a large room or building where people gather for a performance, event, or speech."
+        },
+        {
+          word: "Speakers",
+          type: "Context",
+          prompt: "Complete the sentence: 'The sound came out of the large _____ on both sides of the stage.'",
+          options: ["files", "speakers", "mix-ups", "straight"],
+          correctIndex: 1,
+          explanation: "'Speakers' are electronic equipment that makes sound or music louder."
+        },
+        {
+          word: "Mix-up",
+          type: "Definition Match",
+          prompt: "Which word means 'a mistake or confusion that causes a problem'?",
+          options: ["Tested", "Straight", "Mix-up", "Auditorium"],
+          correctIndex: 2,
+          explanation: "A 'mix-up' is a mistake or confusion that causes a problem."
+        },
+        {
+          word: "Instead of",
+          type: "Translation",
+          prompt: "What is the Spanish translation of 'instead of'?",
+          options: ["Directo", "Probado", "Archivo", "En lugar de"],
+          correctIndex: 3,
+          explanation: "'Instead of' ('en lugar de') means in place of something else."
+        },
+        {
+          word: "Tested",
+          type: "Meaning",
+          prompt: "If the sound equipment was 'tested', what happened?",
+          options: [
+            "It was checked to make sure it works properly and safely",
+            "It was moved to another room",
+            "It was turned off for the night",
+            "It was deleted from the computer"
+          ],
+          correctIndex: 0,
+          explanation: "'Tested' means checked something to make sure it works properly and safely."
+        }
+      ],
+      16: [
+        {
+          word: "Upstairs",
+          type: "Translation",
+          prompt: "What is the Spanish translation of 'upstairs'?",
+          options: ["Puerta delantera", "Arriba / En el piso de arriba", "Tarea", "A menudo"],
+          correctIndex: 1,
+          explanation: "'Upstairs' ('arriba' or 'en el piso de arriba') means on a higher floor of a building."
+        },
+        {
+          word: "Often",
+          type: "Definition Match",
+          prompt: "Which word means 'many times'?",
+          options: ["Still", "Chair", "Often", "Front Door"],
+          correctIndex: 2,
+          explanation: "'Often' means many times."
+        },
+        {
+          word: "Still",
+          type: "Context",
+          prompt: "Complete the sentence: 'At 5:00 p.m., the notebook was _____ sitting on the table.'",
+          options: ["still", "often", "chair", "homework"],
+          correctIndex: 0,
+          explanation: "'Still' means continuing to happen or be the same."
+        },
+        {
+          word: "Homework",
+          type: "Meaning",
+          prompt: "What is 'homework'?",
+          options: [
+            "A piece of furniture for sitting",
+            "The main entrance of a house",
+            "A higher floor of a school",
+            "Schoolwork that students do at home"
+          ],
+          correctIndex: 3,
+          explanation: "'Homework' is schoolwork that students do at home."
+        },
+        {
+          word: "Front Door",
+          type: "Definition Match",
+          prompt: "The main door at the front of a building is the _____.",
+          options: ["upstairs", "front door", "chair", "still"],
+          correctIndex: 1,
+          explanation: "The 'front door' is the main door at the front of a building."
+        }
+      ],
+      17: [
+        {
+          word: "Nurse",
+          type: "Meaning",
+          prompt: "Who is a 'nurse'?",
+          options: [
+            "A person who helps sick or injured people",
+            "A person who drives a school bus",
+            "A round object on a bicycle",
+            "A table for studying"
+          ],
+          correctIndex: 0,
+          explanation: "A 'nurse' is a person who helps sick or injured people."
+        },
+        {
+          word: "Parking lot",
+          type: "Context",
+          prompt: "Complete the sentence: 'All visitors must leave their cars in the _____.'",
+          options: ["desk", "clock", "parking lot", "wheel"],
+          correctIndex: 2,
+          explanation: "A 'parking lot' is an area where people leave their cars."
+        },
+        {
+          word: "Wheel",
+          type: "Definition Match",
+          prompt: "Which word means 'a round object that helps a car or bike move'?",
+          options: ["Clock", "Wheel", "Nurse", "Desk"],
+          correctIndex: 1,
+          explanation: "A 'wheel' is a round object that helps a car or bike move."
+        },
+        {
+          word: "Clock",
+          type: "Translation",
+          prompt: "What is the Spanish translation of 'clock'?",
+          options: ["Escritorio", "Enfermera", "Estacionamiento", "Reloj"],
+          correctIndex: 3,
+          explanation: "A 'clock' ('reloj') is something that shows the time."
+        },
+        {
+          word: "Desk",
+          type: "Meaning",
+          prompt: "What is a 'desk'?",
+          options: [
+            "A table where people work or study",
+            "An area for parking cars",
+            "A medical bandage",
+            "A round bicycle part"
+          ],
+          correctIndex: 0,
+          explanation: "A 'desk' is a table where people work or study."
+        }
+      ],
+      18: [
+        {
+          word: "Announcement",
+          type: "Meaning",
+          prompt: "What is an 'announcement'?",
+          options: [
+            "A small light you carry in your hand",
+            "Information shared with a group of people",
+            "The main entrance gate",
+            "A dark hallway"
+          ],
+          correctIndex: 1,
+          explanation: "An 'announcement' is information shared with a group of people."
+        },
+        {
+          word: "Flashlight",
+          type: "Context",
+          prompt: "Complete the sentence: 'Because the room was dark, she turned on her _____.'",
+          options: ["schedule", "meeting", "flashlight", "announcement"],
+          correctIndex: 2,
+          explanation: "A 'flashlight' is a small light that you can carry in your hand."
+        },
+        {
+          word: "Strange",
+          type: "Translation",
+          prompt: "What is the Spanish translation of 'strange'?",
+          options: ["Extraño / Raro", "Horario", "Reunión", "Portón principal"],
+          correctIndex: 0,
+          explanation: "'Strange' ('extraño' or 'raro') means something unusual or not normal."
+        },
+        {
+          word: "Main gate",
+          type: "Definition Match",
+          prompt: "Which phrase means 'the main entrance to a place'?",
+          options: ["Flashlight", "Schedule", "Meeting", "Main gate"],
+          correctIndex: 3,
+          explanation: "The 'main gate' is the main entrance to a place."
+        },
+        {
+          word: "Schedule",
+          type: "Meaning",
+          prompt: "What does a 'schedule' show?",
+          options: [
+            "Only the names of suspects",
+            "A plan that shows times for activities or events",
+            "How to use a flashlight",
+            "Where to park bicycles"
+          ],
+          correctIndex: 1,
+          explanation: "A 'schedule' is a plan that shows times for activities or events."
+        }
+      ],
+      19: [
+        {
+          word: "Look For",
+          type: "Meaning",
+          prompt: "What does 'look for' mean?",
+          options: [
+            "To try to find something or someone",
+            "To go away from a place",
+            "To bounce up and down",
+            "To save a computer file"
+          ],
+          correctIndex: 0,
+          explanation: "'Look for' means to try to find something or someone."
+        },
+        {
+          word: "Background",
+          type: "Definition Match",
+          prompt: "Which word means 'the sounds or things behind the main activity'?",
+          options: ["Leave", "File", "Background", "Hallway"],
+          correctIndex: 2,
+          explanation: "'Background' refers to the sounds or things behind the main activity."
+        },
+        {
+          word: "Bouncing",
+          type: "Context",
+          prompt: "Complete the sentence: 'We heard a rubber ball _____ on the floor.'",
+          options: ["leaving", "bouncing", "looking for", "announcement"],
+          correctIndex: 1,
+          explanation: "'Bouncing' means moving up and down after hitting a surface."
+        },
+        {
+          word: "Squeaking",
+          type: "Translation",
+          prompt: "What is the Spanish translation of 'squeaking'?",
+          options: ["Buscando", "Ruido fuerte", "Rebotando", "Rechinando / Chillando"],
+          correctIndex: 3,
+          explanation: "'Squeaking' ('rechinando' or 'chillando') means making a short, high sound."
+        },
+        {
+          word: "Leave",
+          type: "Meaning",
+          prompt: "What does 'leave' mean?",
+          options: [
+            "To go away from a place",
+            "To make a high sound",
+            "To search for a clue",
+            "To listen to background music"
+          ],
+          correctIndex: 0,
+          explanation: "'Leave' means to go away from a place."
+        }
+      ],
+      20: [
+        {
+          word: "Curse",
+          type: "Meaning",
+          prompt: "In Case #20 (The Last Day of School), what is a 'curse'?",
+          options: [
+            "A cloud close to the ground",
+            "Magic that makes bad things happen to someone",
+            "A diary from 1942",
+            "A playground tree"
+          ],
+          correctIndex: 1,
+          explanation: "A 'curse' is magic that makes bad things happen to someone."
+        },
+        {
+          word: "Fog",
+          type: "Context",
+          prompt: "Complete the sentence: 'A strange green _____ appeared near the playground tree.'",
+          options: ["curse", "sleepers", "fog", "evidence"],
+          correctIndex: 2,
+          explanation: "'Fog' is a cloud close to the ground that makes it difficult to see."
+        },
+        {
+          word: "Sleepers",
+          type: "Definition Match",
+          prompt: "In the Case #20 glossary, which word is defined as 'people who are sleeping'?",
+          options: ["Sleepers", "Curse", "Fog", "Guilty"],
+          correctIndex: 0,
+          explanation: "In Case #20, 'sleepers' refers to people who are sleeping."
+        },
+        {
+          word: "Fog",
+          type: "Translation",
+          prompt: "What is the Spanish translation of 'fog'?",
+          options: ["Maldición", "Durmientes", "Pista", "Niebla / Neblina"],
+          correctIndex: 3,
+          explanation: "'Fog' translates to 'niebla' or 'neblina' in Spanish."
+        },
+        {
+          word: "Evidence",
+          type: "Context",
+          prompt: "General Detective Word: 'All detectives examine the _____ carefully before forming a theory.'",
+          options: ["fog", "evidence", "curse", "sleepers"],
+          correctIndex: 1,
+          explanation: "From General Vocabulary: 'Evidence' refers to things or information that help you discover the truth."
+        }
+      ]
+    };
+
+    /* ============================================================================
+       4. APPLICATION STATE & LOCALSTORAGE PREFERENCES
+    ============================================================================ */
+    const state = {
+      currentView: "home", // 'home' | 'glossary' | 'talk' | 'challenge' | 'teacher'
+      soundEnabled: true,
+
+      // Glossary state
+      glossarySearch: "",
+      glossaryCaseFilter: "all", // 'all' | '0' | '1'..'20'
+      glossarySort: "case", // 'case' (grouped by 20 cases + General) | 'az' (flat A-Z)
+      openGlossaryCases: {}, // tracks expanded case folders (e.g. { "1": true })
+
+      // Detective Talk state
+      talkCategoryFilter: "All",
+
+      // Vocabulary Challenge state
+      quizMode: "select", // 'select' | 'playing' | 'results'
+      activeCase: null,
+      currentQuestionIdx: 0,
+      score: 0,
+      selectedOptionIdx: null,
+      isAnswered: false,
+      userAnswers: [], // array of { questionIdx, selectedIdx, isCorrect }
+
+      // Pending Navigation (for exit confirmation modal)
+      pendingNavAction: null
+    };
+
+    // Load sound preference safely
+    try {
+      const savedSound = localStorage.getItem("clueHunters_soundEnabled");
+      if (savedSound !== null) {
+        state.soundEnabled = savedSound === "true";
+      }
+    } catch (e) {
+      // Ignore storage access errors in restricted environments
+    }
+
+    /* ============================================================================
+       5. WEB AUDIO API SOUND EFFECTS & TEXT-TO-SPEECH PRONUNCIATION
+    ============================================================================ */
+    let audioCtx = null;
+
+    function getAudioContext() {
+      if (!audioCtx) {
+        const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+        if (AudioContextClass) {
+          audioCtx = new AudioContextClass();
+        }
+      }
+      if (audioCtx && audioCtx.state === "suspended") {
+        audioCtx.resume().catch(() => {});
+      }
+      return audioCtx;
+    }
+
+    // Positive reward chime for correct answer
+    function playCorrectSound() {
+      if (!state.soundEnabled) return;
+      try {
+        const ctx = getAudioContext();
+        if (!ctx) return;
+        const now = ctx.currentTime;
+        const notes = [523.25, 659.25, 783.99]; // C5 -> E5 -> G5 pleasant major triad
+        notes.forEach((freq, idx) => {
+          const osc = ctx.createOscillator();
+          const gain = ctx.createGain();
+          osc.type = "triangle";
+          osc.frequency.setValueAtTime(freq, now + idx * 0.08);
+          gain.gain.setValueAtTime(0.001, now + idx * 0.08);
+          gain.gain.exponentialRampToValueAtTime(0.16, now + idx * 0.08 + 0.02);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.08 + 0.28);
+          osc.connect(gain);
+          gain.connect(ctx.destination);
+          osc.start(now + idx * 0.08);
+          osc.stop(now + idx * 0.08 + 0.3);
+        });
+      } catch (err) {
+        // Audio is supplementary; fail silently
+      }
+    }
+
+    // Gentle, neutral error tone for incorrect answer
+    function playIncorrectSound() {
+      if (!state.soundEnabled) return;
+      try {
+        const ctx = getAudioContext();
+        if (!ctx) return;
+        const now = ctx.currentTime;
+        const notes = [330, 277.18]; // Soft descending interval
+        notes.forEach((freq, idx) => {
+          const osc = ctx.createOscillator();
+          const gain = ctx.createGain();
+          osc.type = "sine";
+          osc.frequency.setValueAtTime(freq, now + idx * 0.14);
+          gain.gain.setValueAtTime(0.001, now + idx * 0.14);
+          gain.gain.exponentialRampToValueAtTime(0.12, now + idx * 0.14 + 0.03);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.14 + 0.28);
+          osc.connect(gain);
+          gain.connect(ctx.destination);
+          osc.start(now + idx * 0.14);
+          osc.stop(now + idx * 0.14 + 0.3);
+        });
+      } catch (err) {
+        // Audio is supplementary; fail silently
+      }
+    }
+
+    function toggleSound() {
+      state.soundEnabled = !state.soundEnabled;
+      try {
+        localStorage.setItem("clueHunters_soundEnabled", String(state.soundEnabled));
+      } catch (e) {}
+      updateSoundUI();
+      if (state.soundEnabled) {
+        playCorrectSound();
+      }
+    }
+
+    function updateSoundUI() {
+      const btn = document.getElementById("global-sound-toggle");
+      const icon = document.getElementById("sound-icon");
+      const label = document.getElementById("sound-label");
+      if (!btn || !icon || !label) return;
+      btn.setAttribute("aria-pressed", String(state.soundEnabled));
+      if (state.soundEnabled) {
+        icon.textContent = "🔊";
+        label.textContent = "Sound: ON";
+        btn.classList.remove("bg-zinc-200", "text-zinc-600");
+        btn.classList.add("bg-white", "text-zinc-900");
+      } else {
+        icon.textContent = "🔇";
+        label.textContent = "Sound: OFF";
+        btn.classList.remove("bg-white", "text-zinc-900");
+        btn.classList.add("bg-zinc-200", "text-zinc-600");
+      }
+    }
+
+    // Text-to-Speech Pronunciation Support
+    const isSpeechSupported = "speechSynthesis" in window && "SpeechSynthesisUtterance" in window;
+
+    function speakText(text, btnEl) {
+      if (!isSpeechSupported) {
+        showToast("Pronunciation audio is not supported in this browser.");
+        return;
+      }
+      try {
+        window.speechSynthesis.cancel();
+        // Clean ellipsis for smoother speech
+        const cleanText = text.replace(/\.\.\./g, "");
+        const utterance = new SpeechSynthesisUtterance(cleanText);
+        utterance.lang = "en-US";
+        utterance.rate = 0.92; // Slightly slower for A1+-A2 English learners
+
+        if (btnEl) {
+          btnEl.classList.add("ring-4", "ring-amber-400");
+          utterance.onend = () => btnEl.classList.remove("ring-4", "ring-amber-400");
+          utterance.onerror = () => btnEl.classList.remove("ring-4", "ring-amber-400");
+        }
+        window.speechSynthesis.speak(utterance);
+      } catch (e) {
+        showToast("Unable to play pronunciation right now.");
+      }
+    }
+
+    /* ============================================================================
+       6. NAVIGATION & EXIT CONFIRMATION PROTECTION
+    ============================================================================ */
+    function isQuizInProgress() {
+      return state.currentView === "challenge" && state.quizMode === "playing";
+    }
+
+    function requestNavigation(targetView, customCallback = null) {
+      // If navigating away or resetting during an unfinished quiz, ask for confirmation
+      if (isQuizInProgress()) {
+        state.pendingNavAction = () => {
+          resetQuizState();
+          if (customCallback) {
+            customCallback();
+          } else {
+            navigateTo(targetView);
+          }
+        };
+        openExitModal();
+        return;
+      }
+
+      if (customCallback) {
+        customCallback();
+      } else {
+        navigateTo(targetView);
+      }
+    }
+
+    function navigateTo(view) {
+      state.currentView = view;
+      if (view !== "challenge") {
+        resetQuizState();
+      }
+      renderApp();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    function openExitModal() {
+      const modal = document.getElementById("exit-modal");
+      modal.classList.remove("hidden");
+      modal.classList.add("flex");
+      setTimeout(() => {
+        document.getElementById("modal-continue-btn").focus();
+      }, 30);
+    }
+
+    function closeExitModal() {
+      const modal = document.getElementById("exit-modal");
+      modal.classList.add("hidden");
+      modal.classList.remove("flex");
+      state.pendingNavAction = null;
+    }
+
+    function confirmExitAction() {
+      const action = state.pendingNavAction;
+      closeExitModal();
+      if (typeof action === "function") {
+        action();
+      }
+    }
+
+    // Escape key closes exit modal safely
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") {
+        const modal = document.getElementById("exit-modal");
+        if (modal && !modal.classList.contains("hidden")) {
+          closeExitModal();
+        }
+      }
+    });
+
+    // Browser refresh / tab close protection ONLY during an unfinished quiz
+    window.addEventListener("beforeunload", (e) => {
+      if (isQuizInProgress()) {
+        e.preventDefault();
+        e.returnValue = "";
+      }
+    });
+
+    /* ============================================================================
+       7. CLIPBOARD & TOAST UTILITIES
+    ============================================================================ */
+    let toastTimer = null;
+    function showToast(msg) {
+      const banner = document.getElementById("toast-banner");
+      const textEl = document.getElementById("toast-message");
+      textEl.textContent = msg;
+      banner.classList.remove("hidden");
+      banner.classList.add("flex");
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => {
+        banner.classList.add("hidden");
+        banner.classList.remove("flex");
+      }, 2400);
+    }
+
+    function copyExpression(text, btnElement) {
+      const textarea = document.createElement("textarea");
+      textarea.value = text;
+      textarea.style.position = "fixed";
+      textarea.style.opacity = "0";
+      document.body.appendChild(textarea);
+      textarea.select();
+      try {
+        document.execCommand("copy");
+      } catch (err) {
+        // Fallback handled visually
+      }
+      document.body.removeChild(textarea);
+
+      // Immediate visual confirmation on the button itself + status toast
+      const originalHTML = btnElement.innerHTML;
+      btnElement.innerHTML = `<span aria-hidden="true">✅</span> <span>Copied!</span>`;
+      btnElement.classList.remove("bg-white");
+      btnElement.classList.add("bg-green-300");
+      showToast(`Copied: "${text}"`);
+
+      setTimeout(() => {
+        btnElement.innerHTML = originalHTML;
+        btnElement.classList.remove("bg-green-300");
+        btnElement.classList.add("bg-white");
+      }, 1600);
+    }
+
+    /* ============================================================================
+       8. VIEW RENDERERS
+    ============================================================================ */
+    function updateHeaderNavHighlight() {
+      const views = ["home", "glossary", "talk", "challenge", "teacher"];
+      views.forEach((v) => {
+        const btn = document.getElementById(`nav-${v}`);
+        if (!btn) return;
+        if (state.currentView === v) {
+          btn.classList.add("ring-4", "ring-zinc-900", "font-extrabold");
+        } else {
+          btn.classList.remove("ring-4", "ring-zinc-900", "font-extrabold");
+        }
+      });
+    }
+
+    function renderApp() {
+      updateSoundUI();
+      updateHeaderNavHighlight();
+      const main = document.getElementById("app-main");
+
+      switch (state.currentView) {
+        case "home":
+          main.innerHTML = renderHomeView();
+          break;
+        case "glossary":
+          main.innerHTML = renderGlossaryView();
+          attachGlossaryListeners();
+          break;
+        case "talk":
+          main.innerHTML = renderTalkView();
+          break;
+        case "challenge":
+          main.innerHTML = renderChallengeView();
+          break;
+        case "teacher":
+          main.innerHTML = renderTeacherView();
+          break;
+        default:
+          main.innerHTML = renderHomeView();
+      }
+    }
+
+    /* ----------------------------------------------------------------------------
+       VIEW 1: HOME PAGE
+    ---------------------------------------------------------------------------- */
+    function renderHomeView() {
+      const sections = [
+        {
+          id: "glossary",
+          title: "Detective Glossary",
+          desc: "Explore new vocabulary with simple definitions, Spanish translations, examples, and audio.",
+          btnText: "Open Glossary",
+          bg: "bg-sky-300",
+          badge: "A1+–A2 WORD BANK",
+          icon: `
+            <svg class="w-10 h-10 text-zinc-900" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+              <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+              <circle cx="12" cy="10" r="2.5"></circle>
+              <path d="M14 12l2 2"></path>
+            </svg>`
+        },
+        {
+          id: "talk",
+          title: "Detective Talk",
+          desc: "Find the right words to express your theories, analyze clues, and discuss with your team.",
+          btnText: "Start Speaking",
+          bg: "bg-purple-300",
+          badge: "SPEAKING SCAFFOLDS",
+          icon: `
+            <svg class="w-10 h-10 text-zinc-900" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+              <line x1="8" y1="9" x2="16" y2="9"></line>
+              <line x1="8" y1="13" x2="13" y2="13"></line>
+            </svg>`
+        },
+        {
+          id: "challenge",
+          title: "Vocabulary Challenge",
+          desc: "Test your detective vocabulary across all 20 mystery cases with 5-question mini-quizzes.",
+          btnText: "Play Challenge",
+          bg: "bg-green-300",
+          badge: "20 CASE QUIZZES",
+          icon: `
+            <svg class="w-10 h-10 text-zinc-900" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <circle cx="12" cy="12" r="10"></circle>
+              <circle cx="12" cy="12" r="6"></circle>
+              <circle cx="12" cy="12" r="2"></circle>
+            </svg>`
+        },
+        {
+          id: "teacher",
+          title: "Teacher Resources",
+          desc: "Download and print classroom materials to support collaborative mystery investigations.",
+          btnText: "View Resources",
+          bg: "bg-rose-300",
+          badge: "CLASSROOM GUIDE",
+          icon: `
+            <svg class="w-10 h-10 text-zinc-900" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+              <polyline points="14 2 14 8 20 8"></polyline>
+              <line x1="16" y1="13" x2="8" y2="13"></line>
+              <line x1="16" y1="17" x2="8" y2="17"></line>
+            </svg>`
+        }
+      ];
+
+      return `
+        <section class="animate-pop">
+          <!-- Folder Tab Top -->
+          <div class="folder-tab bg-amber-300 text-zinc-900 font-bold text-sm sm:text-base ml-4">
+            <span aria-hidden="true">📎</span>
+            <span>CASE FILE #00 — HEADQUARTERS</span>
+          </div>
+
+          <!-- Hero Detective Banner -->
+          <div class="comic-box bg-white halftone-bg p-6 sm:p-10 mb-8 relative overflow-hidden">
+            <!-- Decorative Corner Badge -->
+            <div class="hidden sm:flex items-center gap-2 bg-red-500 text-white comic-box-sm px-3.5 py-1.5 font-bold text-xs uppercase tracking-wider absolute top-6 right-6 rotate-3">
+              <span>CEFR A1+ – A2</span>
+            </div>
+
+            <div class="max-w-3xl">
+              <div class="inline-block bg-amber-300 border-3 border-zinc-900 rounded-xl px-4 py-1.5 font-extrabold text-sm sm:text-base mb-4 shadow-[3px_3px_0px_#18181b]">
+                🕵️‍♂️ Welcome, Detective! Every clue matters.
+              </div>
+
+              <h1 class="comic-font text-4xl sm:text-6xl font-bold text-amber-400 comic-title-stroke tracking-wide mb-4 leading-tight">
+                THE CLUE HUNTERS
+              </h1>
+
+              <p class="text-base sm:text-xl text-zinc-800 font-bold leading-relaxed mb-6 bg-white/90 p-4 rounded-2xl border-2 border-zinc-900/15">
+                Use this digital detective toolkit alongside your <span class="underline decoration-amber-400 decoration-4">physical mystery cards</span>. Look up new words, build English sentences with your team, and test your vocabulary after solving each case!
+              </p>
+
+              <!-- Quick How-To Steps -->
+              <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 text-sm font-extrabold">
+                <div class="bg-amber-100 border-2 border-zinc-900 rounded-xl p-3 flex items-center gap-2.5">
+                  <span class="w-7 h-7 rounded-full bg-zinc-900 text-amber-300 flex items-center justify-center shrink-0">1</span>
+                  <span>Read your physical Clue & Suspect cards</span>
+                </div>
+                <div class="bg-sky-100 border-2 border-zinc-900 rounded-xl p-3 flex items-center gap-2.5">
+                  <span class="w-7 h-7 rounded-full bg-zinc-900 text-sky-300 flex items-center justify-center shrink-0">2</span>
+                  <span>Use Glossary & Detective Talk in English</span>
+                </div>
+                <div class="bg-green-100 border-2 border-zinc-900 rounded-xl p-3 flex items-center gap-2.5">
+                  <span class="w-7 h-7 rounded-full bg-zinc-900 text-green-300 flex items-center justify-center shrink-0">3</span>
+                  <span>Complete the Case Vocabulary Challenge</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 4 Main Sections Grid -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            ${sections.map((sec) => `
+              <article class="comic-box ${sec.bg} p-6 flex flex-col justify-between relative">
+                <div>
+                  <div class="flex items-start justify-between gap-4 mb-4">
+                    <div class="w-16 h-16 rounded-2xl bg-white border-3 border-zinc-900 shadow-[3px_3px_0px_#18181b] flex items-center justify-center shrink-0">
+                      ${sec.icon}
+                    </div>
+                    <span class="bg-zinc-900 text-white text-xs font-extrabold px-3 py-1 rounded-full tracking-wider">
+                      ${sec.badge}
+                    </span>
+                  </div>
+                  <h2 class="text-2xl sm:text-3xl font-bold text-zinc-900 mb-2">
+                    ${sec.title}
+                  </h2>
+                  <p class="text-zinc-900 font-bold text-base leading-relaxed mb-6">
+                    ${sec.desc}
+                  </p>
+                </div>
+
+                <div>
+                  <button
+                    type="button"
+                    onclick="navigateTo('${sec.id}')"
+                    class="comic-btn w-full sm:w-auto px-6 py-3 bg-white hover:bg-amber-100 text-zinc-900 font-bold text-base flex items-center justify-center gap-2"
+                  >
+                    <span>${sec.btnText}</span>
+                    <span aria-hidden="true">➔</span>
+                  </button>
+                </div>
+              </article>
+            `).join("")}
+          </div>
+        </section>
+      `;
+    }
+
+    /* ----------------------------------------------------------------------------
+       VIEW 2: DETECTIVE GLOSSARY
+    ---------------------------------------------------------------------------- */
+    function getFilteredGlossary() {
+      const query = state.glossarySearch.trim().toLowerCase();
+      let list = GLOSSARY_DATA.filter((item) => {
+        const matchesCase =
+          state.glossaryCaseFilter === "all" ||
+          String(item.caseNum) === state.glossaryCaseFilter;
+
+        if (!matchesCase) return false;
+        if (!query) return true;
+
+        return (
+          item.word.toLowerCase().includes(query) ||
+          item.definition.toLowerCase().includes(query) ||
+          item.spanish.toLowerCase().includes(query) ||
+          item.example.toLowerCase().includes(query)
+        );
+      });
+
+      if (state.glossarySort === "az") {
+        list = [...list].sort((a, b) => a.word.localeCompare(b.word));
+      } else {
+        list = [...list].sort((a, b) => a.caseNum - b.caseNum || a.word.localeCompare(b.word));
+      }
+
+      return list;
+    }
+
+    function renderGlossaryView() {
+      const filtered = getFilteredGlossary();
+      const caseOptions = [
+        { value: "all", label: "All Cases & General Vocabulary" },
+        { value: "0", label: "General Vocabulary" },
+        ...Array.from({ length: 20 }, (_, i) => ({
+          value: String(i + 1),
+          label: `Case ${i + 1}${i + 1 === 20 ? " — The Last Day of School" : ""}`
+        }))
+      ];
+
+      return `
+        <section class="animate-pop">
+          <!-- Top Navigation Row -->
+          <div class="flex flex-wrap items-center justify-between gap-3 mb-4">
+            <div class="folder-tab bg-sky-300 text-zinc-900 font-bold text-sm sm:text-base ml-2">
+              <span aria-hidden="true">📖</span>
+              <span>EVIDENCE ARCHIVE — GLOSSARY</span>
+            </div>
+            <button
+              type="button"
+              onclick="navigateTo('home')"
+              class="comic-btn px-4 py-2 bg-white hover:bg-amber-100 text-sm font-bold flex items-center gap-2"
+            >
+              <span aria-hidden="true">🏠</span>
+              <span>Return Home</span>
+            </button>
+          </div>
+
+          <!-- Header & Controls Box -->
+          <div class="comic-box bg-sky-200 halftone-bg p-5 sm:p-7 mb-6">
+            <h1 class="text-3xl sm:text-4xl font-bold text-zinc-900 mb-2">
+              Detective Glossary
+            </h1>
+            <p class="text-zinc-900 font-bold text-base mb-5">
+              Search any word from your Clue, Suspect, or Theory cards. Click the speaker icon to hear how to pronounce each word!
+            </p>
+
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-4 bg-white p-4 rounded-2xl border-3 border-zinc-900">
+              <!-- Real-time Search Input -->
+              <div class="md:col-span-6">
+                <label for="glossary-search-input" class="block text-xs font-extrabold uppercase tracking-wider text-zinc-700 mb-1">
+                  Search Word, Meaning, or Spanish
+                </label>
+                <div class="relative">
+                  <input
+                    id="glossary-search-input"
+                    type="search"
+                    value="${escapeHtml(state.glossarySearch)}"
+                    placeholder="Type a word (e.g., alibi, footprint, curse)..."
+                    class="w-full px-4 py-2.5 pr-10 rounded-xl border-3 border-zinc-900 font-bold text-zinc-900 bg-amber-50/50 focus:bg-white"
+                  />
+                  ${state.glossarySearch ? `
+                    <button
+                      type="button"
+                      onclick="clearGlossarySearch()"
+                      aria-label="Clear search"
+                      class="absolute right-2.5 top-1/2 -translate-y-1/2 w-7 h-7 rounded-lg bg-zinc-200 hover:bg-zinc-300 font-extrabold text-zinc-800 flex items-center justify-center"
+                    >
+                      ✕
+                    </button>
+                  ` : ""}
+                </div>
+              </div>
+
+              <!-- Case Filter -->
+              <div class="md:col-span-4">
+                <label for="glossary-case-select" class="block text-xs font-extrabold uppercase tracking-wider text-zinc-700 mb-1">
+                  Filter by Case
+                </label>
+                <select
+                  id="glossary-case-select"
+                  class="w-full px-3.5 py-2.5 rounded-xl border-3 border-zinc-900 font-bold text-zinc-900 bg-white"
+                >
+                  ${caseOptions.map((opt) => `
+                    <option value="${opt.value}" ${state.glossaryCaseFilter === opt.value ? "selected" : ""}>
+                      ${opt.label}
+                    </option>
+                  `).join("")}
+                </select>
+              </div>
+
+              <!-- Sort Selector -->
+              <div class="md:col-span-2">
+                <label for="glossary-sort-select" class="block text-xs font-extrabold uppercase tracking-wider text-zinc-700 mb-1">
+                  View
+                </label>
+                <select
+                  id="glossary-sort-select"
+                  class="w-full px-3 py-2.5 rounded-xl border-3 border-zinc-900 font-bold text-zinc-900 bg-white"
+                >
+                  <option value="case" ${state.glossarySort === "case" ? "selected" : ""}>By Case</option>
+                  <option value="az" ${state.glossarySort === "az" ? "selected" : ""}>All A – Z</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Live Status Bar -->
+            <div class="mt-4 flex flex-wrap items-center justify-between gap-2 text-sm font-extrabold text-zinc-900">
+              <span aria-live="polite">
+                Showing ${filtered.length} ${filtered.length === 1 ? "vocabulary entry" : "vocabulary entries"}
+              </span>
+              ${!isSpeechSupported ? `
+                <span class="text-xs bg-amber-300 px-3 py-1 rounded-full border-2 border-zinc-900">
+                  ℹ️ Audio pronunciation unavailable in this browser
+                </span>
+              ` : ""}
+            </div>
+          </div>
+
+          <!-- Glossary Cards Grid or Empty State -->
+          <div id="glossary-results-container">
+            ${renderGlossaryCards(filtered)}
+          </div>
+        </section>
+      `;
+    }
+
+    function renderGlossaryCards(items) {
+      if (items.length === 0) {
+        return `
+          <div class="comic-box bg-white p-8 text-center max-w-xl mx-auto">
+            <div class="text-5xl mb-3" aria-hidden="true">🔎</div>
+            <h2 class="text-2xl font-bold text-zinc-900 mb-2">
+              No clues found for "${escapeHtml(state.glossarySearch)}"
+            </h2>
+            <p class="text-zinc-700 font-bold mb-5">
+              Try checking your spelling, searching in English or Spanish, or selecting "All Cases" in the filter above.
+            </p>
+            <button
+              type="button"
+              onclick="resetGlossaryFilters()"
+              class="comic-btn px-5 py-2.5 bg-amber-300 hover:bg-amber-200 font-bold text-sm"
+            >
+              Show All Words
+            </button>
+          </div>
+        `;
+      }
+
+      // Helper to render an individual vocabulary card
+      const renderSingleCard = (item) => `
+        <article class="comic-box bg-white p-5 flex flex-col justify-between">
+          <div>
+            <!-- Top Row: Case Badge + Audio Button -->
+            <div class="flex items-center justify-between gap-2 mb-3">
+              <span class="px-3 py-1 rounded-full text-xs font-extrabold border-2 border-zinc-900 ${item.caseNum === 0 ? "bg-amber-300" : "bg-sky-200"}">
+                ${item.caseLabel}
+              </span>
+              ${isSpeechSupported ? `
+                <button
+                  type="button"
+                  onclick="speakText('${escapeAttr(item.word)}', this)"
+                  class="comic-btn px-3 py-1.5 bg-amber-300 hover:bg-amber-200 text-xs font-extrabold flex items-center gap-1.5"
+                  aria-label="Listen to pronunciation of ${escapeAttr(item.word)}"
+                >
+                  <span aria-hidden="true">🔊</span>
+                  <span>Listen</span>
+                </button>
+              ` : ""}
+            </div>
+
+            <!-- English Word -->
+            <h3 class="text-2xl font-bold text-zinc-900 mb-1">
+              ${escapeHtml(item.word)}
+            </h3>
+
+            <!-- Spanish Translation -->
+            <p class="text-sm font-extrabold text-purple-700 mb-3 flex items-center gap-1.5">
+              <span class="bg-purple-100 border border-purple-400 px-2 py-0.5 rounded-md text-xs">ES</span>
+              <span>${escapeHtml(item.spanish)}</span>
+            </p>
+
+            <!-- Simple A1+-A2 Definition -->
+            <p class="text-zinc-800 font-bold text-sm leading-relaxed mb-4">
+              ${escapeHtml(item.definition)}
+            </p>
+          </div>
+
+          <!-- Contextualized Example Sentence -->
+          <div class="bg-amber-50 border-2 border-zinc-900/20 rounded-xl p-3">
+            <span class="block text-[11px] font-extrabold uppercase tracking-wider text-zinc-500 mb-0.5">
+              Example in Context
+            </span>
+            <p class="text-xs sm:text-sm font-bold italic text-zinc-900">
+              "${escapeHtml(item.example)}"
+            </p>
+          </div>
+        </article>
+      `;
+
+      // Flat A-Z View
+      if (state.glossarySort === "az") {
+        return `
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+            ${items.map((item) => renderSingleCard(item)).join("")}
+          </div>
+        `;
+      }
+
+      // Grouped by Case View (General Vocabulary + Case 1 to Case 20 collapsible case boxes)
+      const sectionOrder = [0, ...Array.from({ length: 20 }, (_, i) => i + 1)];
+      const sectionColors = [
+        "bg-amber-300",
+        "bg-sky-300",
+        "bg-purple-300",
+        "bg-green-300",
+        "bg-rose-300"
+      ];
+      const isSearching = state.glossarySearch.trim().length > 0;
+      const isSingleCaseFiltered = state.glossaryCaseFilter !== "all";
+
+      return `
+        <div class="space-y-4">
+          ${sectionOrder.map((caseNum) => {
+            const groupItems = items
+              .filter((item) => item.caseNum === caseNum)
+              .sort((a, b) => a.word.localeCompare(b.word));
+
+            if (groupItems.length === 0) return "";
+
+            const sectionTitle =
+              caseNum === 0
+                ? "General Vocabulary"
+                : caseNum === 20
+                ? "Case 20 — The Last Day of School"
+                : `Case ${caseNum}`;
+
+            const cardBg = caseNum === 0 ? "bg-amber-300" : sectionColors[caseNum % sectionColors.length];
+            const isExpanded = isSearching || isSingleCaseFiltered || Boolean(state.openGlossaryCases[caseNum]);
+
+            return `
+              <section aria-labelledby="glossary-section-${caseNum}" class="comic-box bg-white overflow-hidden">
+                <!-- Clickable Case Box Header -->
+                <button
+                  type="button"
+                  onclick="toggleGlossaryCase(${caseNum})"
+                  aria-expanded="${isExpanded}"
+                  aria-controls="glossary-panel-${caseNum}"
+                  class="w-full ${cardBg} hover:brightness-95 transition-all px-5 py-4 flex items-center justify-between gap-3 text-left cursor-pointer ${isExpanded ? "border-b-3 border-zinc-900" : ""}"
+                >
+                  <div class="flex items-center gap-3 flex-wrap">
+                    <span class="w-10 h-10 rounded-xl bg-white border-3 border-zinc-900 shadow-[2px_2px_0px_#18181b] flex items-center justify-center text-xl shrink-0" aria-hidden="true">
+                      ${caseNum === 0 ? "🕵️" : isExpanded ? "📂" : "📁"}
+                    </span>
+                    <div>
+                      <h2 id="glossary-section-${caseNum}" class="comic-font text-xl sm:text-2xl font-bold text-zinc-900 leading-tight">
+                        ${sectionTitle}
+                      </h2>
+                      <span class="text-xs font-extrabold text-zinc-800">
+                        ${isExpanded ? "Click to hide words" : "Click to open case words"}
+                      </span>
+                    </div>
+                  </div>
+
+                  <div class="flex items-center gap-2.5 shrink-0">
+                    <span class="bg-white text-zinc-900 text-xs sm:text-sm font-extrabold px-3 py-1 rounded-full border-2 border-zinc-900 shadow-[2px_2px_0px_#18181b]">
+                      ${groupItems.length} ${groupItems.length === 1 ? "word" : "words"}
+                    </span>
+                    <span class="w-9 h-9 rounded-xl bg-zinc-900 text-amber-300 font-extrabold flex items-center justify-center text-sm transition-transform duration-200 ${isExpanded ? "rotate-180" : ""}" aria-hidden="true">
+                      ▼
+                    </span>
+                  </div>
+                </button>
+
+                <!-- Collapsible Vocabulary Cards Container -->
+                ${isExpanded ? `
+                  <div id="glossary-panel-${caseNum}" class="p-4 sm:p-6 bg-amber-50/40 halftone-bg animate-pop">
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+                      ${groupItems.map((item) => renderSingleCard(item)).join("")}
+                    </div>
+                  </div>
+                ` : ""}
+              </section>
+            `;
+          }).join("")}
+        </div>
+      `;
+    }
+
+    function toggleGlossaryCase(caseNum) {
+      state.openGlossaryCases[caseNum] = !state.openGlossaryCases[caseNum];
+      renderApp();
+    }
+
+    function attachGlossaryListeners() {
+      const searchInput = document.getElementById("glossary-search-input");
+      const caseSelect = document.getElementById("glossary-case-select");
+      const sortSelect = document.getElementById("glossary-sort-select");
+
+      if (searchInput) {
+        searchInput.addEventListener("input", (e) => {
+          state.glossarySearch = e.target.value;
+          // Update results immediately without losing input focus
+          const container = document.getElementById("glossary-results-container");
+          if (container) {
+            container.innerHTML = renderGlossaryCards(getFilteredGlossary());
+          }
+          // Re-render full view only if clear button visibility needs toggling
+          const hasClear = Boolean(searchInput.parentElement.querySelector("button"));
+          if ((state.glossarySearch && !hasClear) || (!state.glossarySearch && hasClear)) {
+            const pos = searchInput.selectionStart;
+            renderApp();
+            const newInput = document.getElementById("glossary-search-input");
+            if (newInput) {
+              newInput.focus();
+              newInput.setSelectionRange(pos, pos);
+            }
+          }
+        });
+      }
+
+      if (caseSelect) {
+        caseSelect.addEventListener("change", (e) => {
+          state.glossaryCaseFilter = e.target.value;
+          renderApp();
+        });
+      }
+
+      if (sortSelect) {
+        sortSelect.addEventListener("change", (e) => {
+          state.glossarySort = e.target.value;
+          renderApp();
+        });
+      }
+    }
+
+    function clearGlossarySearch() {
+      state.glossarySearch = "";
+      renderApp();
+      const input = document.getElementById("glossary-search-input");
+      if (input) input.focus();
+    }
+
+    function resetGlossaryFilters() {
+      state.glossarySearch = "";
+      state.glossaryCaseFilter = "all";
+      renderApp();
+    }
+
+    /* ----------------------------------------------------------------------------
+       VIEW 3: DETECTIVE TALK
+    ---------------------------------------------------------------------------- */
+    function renderTalkView() {
+      const categories = ["All", ...DETECTIVE_TALK_DATA.map((c) => c.category)];
+      const visibleGroups =
+        state.talkCategoryFilter === "All"
+          ? DETECTIVE_TALK_DATA
+          : DETECTIVE_TALK_DATA.filter((g) => g.category === state.talkCategoryFilter);
+
+      return `
+        <section class="animate-pop">
+          <!-- Top Navigation Row -->
+          <div class="flex flex-wrap items-center justify-between gap-3 mb-4">
+            <div class="folder-tab bg-purple-300 text-zinc-900 font-bold text-sm sm:text-base ml-2">
+              <span aria-hidden="true">💬</span>
+              <span>COMMUNICATION LAB — DETECTIVE TALK</span>
+            </div>
+            <button
+              type="button"
+              onclick="navigateTo('home')"
+              class="comic-btn px-4 py-2 bg-white hover:bg-amber-100 text-sm font-bold flex items-center gap-2"
+            >
+              <span aria-hidden="true">🏠</span>
+              <span>Return Home</span>
+            </button>
+          </div>
+
+          <!-- Header & Category Filters -->
+          <div class="comic-box bg-purple-200 halftone-bg p-5 sm:p-7 mb-6">
+            <h1 class="text-3xl sm:text-4xl font-bold text-zinc-900 mb-2">
+              Detective Talk
+            </h1>
+            <p class="text-zinc-900 font-bold text-base mb-5">
+              Use these English sentence starters during your group investigation to share ideas, ask questions, and explain your theories!
+            </p>
+
+            <!-- Category Filter Pills -->
+            <div role="group" aria-label="Filter expressions by category" class="flex flex-wrap gap-2">
+              ${categories.map((cat) => {
+                const isActive = state.talkCategoryFilter === cat;
+                return `
+                  <button
+                    type="button"
+                    onclick="setTalkCategory('${escapeAttr(cat)}')"
+                    aria-pressed="${isActive}"
+                    class="comic-btn px-4 py-2 text-sm font-bold ${
+                      isActive
+                        ? "bg-zinc-900 text-amber-300"
+                        : "bg-white hover:bg-purple-100 text-zinc-900"
+                    }"
+                  >
+                    ${escapeHtml(cat)}
+                  </button>
+                `;
+              }).join("")}
+            </div>
+          </div>
+
+          <!-- Expression Categories -->
+          <div class="space-y-6">
+            ${visibleGroups.map((group) => `
+              <div class="comic-box bg-white p-5 sm:p-6">
+                <div class="flex flex-wrap items-center justify-between gap-2 pb-4 mb-4 border-b-3 border-zinc-900/15">
+                  <div class="flex items-center gap-3">
+                    <span class="w-11 h-11 rounded-xl ${group.color} border-3 border-zinc-900 flex items-center justify-center text-2xl" aria-hidden="true">
+                      ${group.icon}
+                    </span>
+                    <div>
+                      <h2 class="text-2xl font-bold text-zinc-900">${escapeHtml(group.category)}</h2>
+                      <p class="text-xs sm:text-sm font-bold text-zinc-600">${escapeHtml(group.tip)}</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  ${group.expressions.map((exp) => `
+                    <div class="${group.color} border-3 border-zinc-900 rounded-2xl p-4 flex flex-col justify-between gap-3 shadow-[3px_3px_0px_#18181b]">
+                      <div>
+                        <p class="comic-font text-xl font-bold text-zinc-900 mb-1">
+                          "${escapeHtml(exp.text)}"
+                        </p>
+                        <p class="text-xs sm:text-sm font-bold text-zinc-800 bg-white/80 rounded-lg px-3 py-1.5 border border-zinc-900/20">
+                          <span class="uppercase text-[11px] font-extrabold text-zinc-500 mr-1">Example:</span>
+                          ${escapeHtml(exp.usage)}
+                        </p>
+                      </div>
+
+                      <div class="flex items-center gap-2 pt-1">
+                        ${isSpeechSupported ? `
+                          <button
+                            type="button"
+                            onclick="speakText('${escapeAttr(exp.text)}', this)"
+                            class="comic-btn px-3.5 py-2 bg-amber-300 hover:bg-amber-200 text-xs sm:text-sm font-extrabold flex items-center gap-1.5"
+                            aria-label="Listen to ${escapeAttr(exp.text)}"
+                          >
+                            <span aria-hidden="true">🔊</span>
+                            <span>Listen</span>
+                          </button>
+                        ` : ""}
+                        <button
+                          type="button"
+                          onclick="copyExpression('${escapeAttr(exp.text)}', this)"
+                          class="comic-btn px-3.5 py-2 bg-white hover:bg-zinc-100 text-xs sm:text-sm font-extrabold flex items-center gap-1.5"
+                          aria-label="Copy expression ${escapeAttr(exp.text)}"
+                        >
+                          <span aria-hidden="true">📋</span>
+                          <span>Copy</span>
+                        </button>
+                      </div>
+                    </div>
+                  `).join("")}
+                </div>
+              </div>
+            `).join("")}
+          </div>
+        </section>
+      `;
+    }
+
+    function setTalkCategory(category) {
+      state.talkCategoryFilter = category;
+      renderApp();
+    }
+
+    /* ----------------------------------------------------------------------------
+       VIEW 4: VOCABULARY CHALLENGE (20 CASE QUIZZES, 5 QUESTIONS EACH = 100)
+    ---------------------------------------------------------------------------- */
+    function resetQuizState() {
+      state.quizMode = "select";
+      state.activeCase = null;
+      state.currentQuestionIdx = 0;
+      state.score = 0;
+      state.selectedOptionIdx = null;
+      state.isAnswered = false;
+      state.userAnswers = [];
+    }
+
+    function startCaseQuiz(caseNum) {
+      state.quizMode = "playing";
+      state.activeCase = caseNum;
+      state.currentQuestionIdx = 0;
+      state.score = 0;
+      state.selectedOptionIdx = null;
+      state.isAnswered = false;
+      state.userAnswers = [];
+      renderApp();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    function restartCurrentQuiz() {
+      if (state.activeCase !== null) {
+        startCaseQuiz(state.activeCase);
+      }
+    }
+
+    function renderChallengeView() {
+      if (state.quizMode === "playing" && state.activeCase !== null) {
+        return renderActiveQuizQuestion();
+      }
+      if (state.quizMode === "results" && state.activeCase !== null) {
+        return renderQuizResults();
+      }
+      return renderCaseSelectionGrid();
+    }
+
+    function renderCaseSelectionGrid() {
+      const cardColors = [
+        "bg-amber-200",
+        "bg-sky-200",
+        "bg-purple-200",
+        "bg-green-200",
+        "bg-rose-200"
+      ];
+
+      return `
+        <section class="animate-pop">
+          <!-- Top Navigation Row -->
+          <div class="flex flex-wrap items-center justify-between gap-3 mb-4">
+            <div class="folder-tab bg-green-300 text-zinc-900 font-bold text-sm sm:text-base ml-2">
+              <span aria-hidden="true">🎯</span>
+              <span>CASE MISSIONS — VOCABULARY CHALLENGE</span>
+            </div>
+            <button
+              type="button"
+              onclick="navigateTo('home')"
+              class="comic-btn px-4 py-2 bg-white hover:bg-amber-100 text-sm font-bold flex items-center gap-2"
+            >
+              <span aria-hidden="true">🏠</span>
+              <span>Return Home</span>
+            </button>
+          </div>
+
+          <!-- Instruction Banner -->
+          <div class="comic-box bg-green-200 halftone-bg p-5 sm:p-7 mb-6">
+            <div class="inline-block bg-amber-300 border-3 border-zinc-900 rounded-xl px-4 py-1.5 font-extrabold text-sm sm:text-base mb-3 shadow-[3px_3px_0px_#18181b]">
+              🕵️‍♀️ Have you solved this mystery? Let's test your vocabulary!
+            </div>
+            <h1 class="text-3xl sm:text-4xl font-bold text-zinc-900 mb-2">
+              Select a Mystery Case
+            </h1>
+            <p class="text-zinc-900 font-bold text-base">
+              Choose any of the 20 cases below after investigating its physical cards. Each challenge has 5 questions (100 questions in total).
+            </p>
+          </div>
+
+          <!-- 20 Selectable Case Cards -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
+            ${Array.from({ length: 20 }, (_, i) => {
+              const caseNum = i + 1;
+              const color = cardColors[i % cardColors.length];
+              const isCase20 = caseNum === 20;
+              return `
+                <article class="comic-box ${color} p-5 flex flex-col justify-between">
+                  <div>
+                    <div class="flex items-center justify-between gap-2 mb-3">
+                      <span class="bg-red-500 text-white border-2 border-zinc-900 px-3 py-1 rounded-lg comic-font text-base font-bold shadow-[2px_2px_0px_#18181b]">
+                        CASE #${caseNum}
+                      </span>
+                      <span class="text-xs font-extrabold bg-white/90 px-2.5 py-1 rounded-full border-2 border-zinc-900">
+                        5 Questions
+                      </span>
+                    </div>
+                    <h2 class="text-xl font-bold text-zinc-900 mb-4 leading-snug">
+                      ${isCase20 ? "Case #20: The Last Day of School" : `Mystery Case #${caseNum}`}
+                    </h2>
+                  </div>
+
+                  <button
+                    type="button"
+                    onclick="startCaseQuiz(${caseNum})"
+                    class="comic-btn w-full py-2.5 px-4 bg-white hover:bg-amber-100 text-zinc-900 font-bold text-sm flex items-center justify-center gap-2"
+                    aria-label="Start Vocabulary Challenge for ${CASE_TITLES[caseNum]}"
+                  >
+                    <span>Start Challenge</span>
+                    <span aria-hidden="true">➔</span>
+                  </button>
+                </article>
+              `;
+            }).join("")}
+          </div>
+        </section>
+      `;
+    }
+
+    function renderActiveQuizQuestion() {
+      const questions = QUIZZES_DATA[state.activeCase];
+      const q = questions[state.currentQuestionIdx];
+      const progressPercent = ((state.currentQuestionIdx + (state.isAnswered ? 1 : 0)) / questions.length) * 100;
+      const letters = ["A", "B", "C", "D"];
+
+      return `
+        <section class="animate-pop max-w-3xl mx-auto">
+          <!-- Top Bar: Case Info, Score, Sound & Home -->
+          <div class="flex flex-wrap items-center justify-between gap-3 mb-4">
+            <div class="flex items-center gap-2">
+              <span class="bg-red-500 text-white border-3 border-zinc-900 px-3.5 py-1.5 rounded-xl comic-font text-base font-bold shadow-[3px_3px_0px_#18181b]">
+                ${CASE_TITLES[state.activeCase]}
+              </span>
+              <span class="bg-amber-300 border-3 border-zinc-900 px-3.5 py-1.5 rounded-xl font-extrabold text-sm shadow-[3px_3px_0px_#18181b]">
+                Score: ${state.score} / ${questions.length}
+              </span>
+            </div>
+
+            <div class="flex items-center gap-2">
+              <button
+                type="button"
+                onclick="requestNavigation('challenge')"
+                class="comic-btn px-3.5 py-2 bg-white hover:bg-zinc-100 text-xs sm:text-sm font-bold"
+              >
+                All Cases
+              </button>
+              <button
+                type="button"
+                onclick="requestNavigation('home')"
+                class="comic-btn px-3.5 py-2 bg-white hover:bg-amber-100 text-xs sm:text-sm font-bold flex items-center gap-1"
+              >
+                <span aria-hidden="true">🏠</span>
+                <span>Home</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Progress Bar -->
+          <div class="mb-5 bg-white border-3 border-zinc-900 rounded-2xl p-3 shadow-[3px_3px_0px_#18181b]">
+            <div class="flex items-center justify-between text-xs sm:text-sm font-extrabold text-zinc-800 mb-1.5">
+              <span>Question ${state.currentQuestionIdx + 1} of ${questions.length}</span>
+              <span class="bg-purple-200 px-2.5 py-0.5 rounded-full border border-zinc-900 text-xs">
+                ${q.type}
+              </span>
+            </div>
+            <div class="w-full h-4 bg-zinc-200 rounded-full border-2 border-zinc-900 overflow-hidden" role="progressbar" aria-valuenow="${state.currentQuestionIdx + 1}" aria-valuemin="1" aria-valuemax="${questions.length}">
+              <div class="h-full bg-green-400 transition-all duration-300" style="width: ${progressPercent}%"></div>
+            </div>
+          </div>
+
+          <!-- Question Card -->
+          <div class="comic-box bg-white p-6 sm:p-8">
+            <h2 class="text-xl sm:text-2xl font-bold text-zinc-900 mb-6 leading-snug">
+              ${escapeHtml(q.prompt)}
+            </h2>
+
+            <!-- 4 Answer Options -->
+            <div class="space-y-3" role="radiogroup" aria-label="Answer options">
+              ${q.options.map((opt, idx) => {
+                let btnClasses = "bg-amber-50 hover:bg-amber-100 text-zinc-900";
+                let badgeClasses = "bg-white text-zinc-900";
+                let statusIcon = "";
+
+                if (state.isAnswered) {
+                  if (idx === q.correctIndex) {
+                    btnClasses = "bg-green-300 text-zinc-900 ring-4 ring-green-600";
+                    badgeClasses = "bg-green-600 text-white";
+                    statusIcon = `<span class="ml-auto text-xl font-extrabold" aria-label="Correct answer">✔</span>`;
+                  } else if (idx === state.selectedOptionIdx) {
+                    btnClasses = "bg-red-300 text-zinc-900 ring-4 ring-red-600";
+                    badgeClasses = "bg-red-600 text-white";
+                    statusIcon = `<span class="ml-auto text-xl font-extrabold" aria-label="Incorrect selection">✖</span>`;
+                  } else {
+                    btnClasses = "bg-zinc-100 text-zinc-500 opacity-75";
+                  }
+                }
+
+                return `
+                  <button
+                    type="button"
+                    onclick="selectQuizOption(${idx})"
+                    ${state.isAnswered ? "disabled" : ""}
+                    aria-checked="${state.selectedOptionIdx === idx}"
+                    class="comic-btn w-full p-4 text-left font-bold text-base sm:text-lg flex items-center gap-3.5 ${btnClasses} ${state.isAnswered ? "cursor-default" : ""}"
+                  >
+                    <span class="w-9 h-9 rounded-xl border-2 border-zinc-900 ${badgeClasses} flex items-center justify-center font-extrabold shrink-0">
+                      ${letters[idx]}
+                    </span>
+                    <span class="leading-snug">${escapeHtml(opt)}</span>
+                    ${statusIcon}
+                  </button>
+                `;
+              }).join("")}
+            </div>
+
+            <!-- Immediate Corrective Feedback Panel -->
+            ${state.isAnswered ? renderImmediateFeedback(q) : `
+              <p class="mt-6 text-sm font-bold text-zinc-500 text-center">
+                Select one answer above to check your clue!
+              </p>
+            `}
+          </div>
+        </section>
+      `;
+    }
+
+    function renderImmediateFeedback(q) {
+      const isCorrect = state.selectedOptionIdx === q.correctIndex;
+      const isLastQuestion = state.currentQuestionIdx === QUIZZES_DATA[state.activeCase].length - 1;
+
+      return `
+        <div
+          role="alert"
+          aria-live="assertive"
+          class="mt-6 p-5 rounded-2xl border-3 border-zinc-900 animate-pop ${
+            isCorrect ? "bg-green-200" : "bg-rose-100"
+          }"
+        >
+          <div class="flex items-start gap-3 mb-2">
+            <span class="text-2xl shrink-0" aria-hidden="true">${isCorrect ? "🎉" : "🔍"}</span>
+            <div>
+              <h3 class="text-xl font-bold text-zinc-900">
+                ${isCorrect ? "Great job, Detective!" : "Not quite. Keep investigating!"}
+              </h3>
+              <p class="text-zinc-900 font-bold text-sm sm:text-base mt-1 leading-relaxed">
+                ${escapeHtml(q.explanation)}
+              </p>
+            </div>
+          </div>
+
+          <div class="mt-4 flex justify-end">
+            <button
+              type="button"
+              id="next-question-btn"
+              onclick="advanceQuizQuestion()"
+              class="comic-btn px-6 py-3 bg-amber-300 hover:bg-amber-200 text-zinc-900 font-bold text-base flex items-center gap-2"
+            >
+              <span>${isLastQuestion ? "See Final Results" : "Next Question"}</span>
+              <span aria-hidden="true">➔</span>
+            </button>
+          </div>
+        </div>
+      `;
+    }
+
+    function selectQuizOption(optionIdx) {
+      if (state.isAnswered) return; // Prevent duplicate attempts
+
+      const questions = QUIZZES_DATA[state.activeCase];
+      const currentQ = questions[state.currentQuestionIdx];
+      const isCorrect = optionIdx === currentQ.correctIndex;
+
+      state.selectedOptionIdx = optionIdx;
+      state.isAnswered = true;
+
+      if (isCorrect) {
+        state.score += 1;
+        playCorrectSound();
+      } else {
+        playIncorrectSound();
+      }
+
+      state.userAnswers.push({
+        questionIdx: state.currentQuestionIdx,
+        selectedIdx: optionIdx,
+        isCorrect
+      });
+
+      renderApp();
+
+      // Move focus gently to Next Question button for keyboard accessibility
+      setTimeout(() => {
+        const nextBtn = document.getElementById("next-question-btn");
+        if (nextBtn) nextBtn.focus();
+      }, 40);
+    }
+
+    function advanceQuizQuestion() {
+      const questions = QUIZZES_DATA[state.activeCase];
+      if (state.currentQuestionIdx < questions.length - 1) {
+        state.currentQuestionIdx += 1;
+        state.selectedOptionIdx = null;
+        state.isAnswered = false;
+        renderApp();
+      } else {
+        state.quizMode = "results";
+        renderApp();
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
+    }
+
+    function renderQuizResults() {
+      const questions = QUIZZES_DATA[state.activeCase];
+      const total = questions.length;
+      const correctCount = state.score;
+      const incorrectCount = total - correctCount;
+
+      let performanceMessage = "";
+      let badgeEmoji = "";
+      let bannerBg = "bg-amber-200";
+
+      if (correctCount === 5) {
+        performanceMessage = "Outstanding work, Detective!";
+        badgeEmoji = "🏆";
+        bannerBg = "bg-green-300";
+      } else if (correctCount === 4) {
+        performanceMessage = "Excellent investigation!";
+        badgeEmoji = "🌟";
+        bannerBg = "bg-sky-300";
+      } else if (correctCount === 3) {
+        performanceMessage = "Good work! Keep practicing.";
+        badgeEmoji = "👍";
+        bannerBg = "bg-amber-200";
+      } else {
+        performanceMessage = "Every mistake is a new clue. Try again!";
+        badgeEmoji = "🔎";
+        bannerBg = "bg-purple-200";
+      }
+
+      return `
+        <section class="animate-pop max-w-3xl mx-auto">
+          <!-- Results Summary Card -->
+          <div class="comic-box ${bannerBg} halftone-bg p-6 sm:p-8 text-center mb-6">
+            <div class="inline-flex items-center justify-center w-20 h-20 rounded-full bg-white border-4 border-zinc-900 shadow-[4px_4px_0px_#18181b] text-4xl mb-4">
+              <span aria-hidden="true">${badgeEmoji}</span>
+            </div>
+
+            <div class="text-xs font-extrabold uppercase tracking-wider bg-zinc-900 text-amber-300 px-3.5 py-1 rounded-full inline-block mb-2">
+              ${CASE_TITLES[state.activeCase]} — COMPLETE
+            </div>
+
+            <h1 class="text-3xl sm:text-4xl font-bold text-zinc-900 mb-2">
+              ${performanceMessage}
+            </h1>
+
+            <p class="comic-font text-4xl sm:text-5xl font-bold text-zinc-900 my-4">
+              ${correctCount} / ${total}
+            </p>
+
+            <!-- Visual Star / Clue Meter -->
+            <div class="flex items-center justify-center gap-2 mb-5" aria-label="Visual score indicator: ${correctCount} out of ${total} stars">
+              ${Array.from({ length: total }, (_, i) => `
+                <span class="w-10 h-10 rounded-xl border-3 border-zinc-900 flex items-center justify-center text-xl ${
+                  i < correctCount ? "bg-amber-300 shadow-[2px_2px_0px_#18181b]" : "bg-white/70 opacity-50"
+                }">
+                  ${i < correctCount ? "⭐" : "☆"}
+                </span>
+              `).join("")}
+            </div>
+
+            <!-- Correct vs Incorrect Counters -->
+            <div class="grid grid-cols-2 gap-3 max-w-sm mx-auto mb-6">
+              <div class="bg-white border-3 border-zinc-900 rounded-xl p-3">
+                <span class="block text-2xl font-extrabold text-green-700">${correctCount}</span>
+                <span class="text-xs font-extrabold uppercase text-zinc-700">Correct Answers</span>
+              </div>
+              <div class="bg-white border-3 border-zinc-900 rounded-xl p-3">
+                <span class="block text-2xl font-extrabold text-red-600">${incorrectCount}</span>
+                <span class="text-xs font-extrabold uppercase text-zinc-700">Incorrect Answers</span>
+              </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="flex flex-wrap items-center justify-center gap-3">
+              <button
+                type="button"
+                onclick="restartCurrentQuiz()"
+                class="comic-btn px-5 py-3 bg-amber-300 hover:bg-amber-200 text-zinc-900 font-bold text-base"
+              >
+                🔄 Try Again
+              </button>
+              <button
+                type="button"
+                onclick="navigateTo('challenge')"
+                class="comic-btn px-5 py-3 bg-white hover:bg-sky-100 text-zinc-900 font-bold text-base"
+              >
+                📂 Select Another Case
+              </button>
+              <button
+                type="button"
+                onclick="navigateTo('home')"
+                class="comic-btn px-5 py-3 bg-white hover:bg-zinc-100 text-zinc-900 font-bold text-base"
+              >
+                🏠 Return Home
+              </button>
+            </div>
+          </div>
+
+          <!-- Review of the 5 Vocabulary Words -->
+          <div class="comic-box bg-white p-6">
+            <h2 class="text-2xl font-bold text-zinc-900 mb-4 flex items-center gap-2">
+              <span aria-hidden="true">📋</span>
+              <span>Case Vocabulary Review</span>
+            </h2>
+
+            <div class="space-y-3">
+              ${questions.map((q, idx) => {
+                const record = state.userAnswers[idx];
+                const wasCorrect = record && record.isCorrect;
+                return `
+                  <div class="p-4 rounded-2xl border-2 border-zinc-900 ${wasCorrect ? "bg-green-100" : "bg-rose-50"}">
+                    <div class="flex flex-wrap items-center justify-between gap-2 mb-1">
+                      <div class="flex items-center gap-2">
+                        <span class="font-extrabold text-base">${wasCorrect ? "✔" : "✖"}</span>
+                        <span class="comic-font text-xl font-bold text-zinc-900">${escapeHtml(q.word)}</span>
+                      </div>
+                      <span class="text-xs font-extrabold px-2.5 py-0.5 rounded-full border border-zinc-900 bg-white">
+                        Correct: ${escapeHtml(q.options[q.correctIndex])}
+                      </span>
+                    </div>
+                    <p class="text-sm font-bold text-zinc-800">
+                      ${escapeHtml(q.explanation)}
+                    </p>
+                  </div>
+                `;
+              }).join("")}
+            </div>
+          </div>
+        </section>
+      `;
+    }
+
+    /* ----------------------------------------------------------------------------
+       VIEW 5: TEACHER RESOURCES
+    ---------------------------------------------------------------------------- */
+    function renderTeacherView() {
+      return `
+        <section class="animate-pop">
+          <!-- Top Navigation Row -->
+          <div class="flex flex-wrap items-center justify-between gap-3 mb-4 no-print">
+            <div class="folder-tab bg-rose-300 text-zinc-900 font-bold text-sm sm:text-base ml-2">
+              <span aria-hidden="true">🧑‍🏫</span>
+              <span>EDUCATOR BRIEFING — TEACHER RESOURCES</span>
+            </div>
+            <button
+              type="button"
+              onclick="navigateTo('home')"
+              class="comic-btn px-4 py-2 bg-white hover:bg-amber-100 text-sm font-bold flex items-center gap-2"
+            >
+              <span aria-hidden="true">🏠</span>
+              <span>Return Home</span>
+            </button>
+          </div>
+
+          <!-- Header Banner -->
+          <div class="comic-box bg-rose-200 halftone-bg p-5 sm:p-7 mb-6 no-print">
+            <h1 class="text-3xl sm:text-4xl font-bold text-zinc-900 mb-2">
+              Teacher Resources
+            </h1>
+            <p class="text-zinc-900 font-bold text-base">
+              Supplementary classroom documentation and printable Detective Worksheet for facilitating collaborative A1+–A2 English mystery investigations.
+            </p>
+          </div>
+
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+            <!-- Left Column: Worksheet Description, Purpose & Classroom Guide -->
+            <div class="lg:col-span-7 space-y-6 no-print">
+              <div class="comic-box bg-white p-6">
+                <h2 class="text-2xl font-bold text-zinc-900 mb-3 flex items-center gap-2">
+                  <span aria-hidden="true">📄</span>
+                  <span>About the Detective Worksheet</span>
+                </h2>
+                <p class="text-zinc-800 font-bold text-sm sm:text-base leading-relaxed mb-4">
+                  The <strong>Detective Worksheet</strong> (<code>detective-worksheet-comic.pdf</code>) is a structured graphic organizer designed for small groups of teenage learners (CEFR A1+–A2) working through the 20 physical mystery card decks. It guides students to record their Case Number, Case Name, and Mission, log three key clues on the Evidence Board, weigh evidence for and against suspects or theories, and write a final group deduction.
+                </p>
+
+                <h3 class="text-lg font-bold text-zinc-900 mb-2">
+                  Educational Purpose
+                </h3>
+                <ul class="space-y-2 text-sm sm:text-base font-bold text-zinc-800 list-disc pl-5">
+                  <li><strong>Communicative Scaffolding:</strong> Connects directly to the <em>Detective Talk</em> sentence starters ("This could mean...", "We think...", "Our final answer is...").</li>
+                  <li><strong>Collaborative Critical Thinking:</strong> Encourages students to compare evidence for and against each theory before jumping to conclusions.</li>
+                  <li><strong>Low-Anxiety Writing Practice:</strong> Breaks English production into short, manageable prompts suited for A1+–A2 learners.</li>
+                </ul>
+              </div>
+
+              <!-- Classroom Implementation Steps -->
+              <div class="comic-box bg-amber-100 p-6">
+                <h2 class="text-2xl font-bold text-zinc-900 mb-3 flex items-center gap-2">
+                  <span aria-hidden="true">🗂️</span>
+                  <span>How to Use With Physical Mystery Cards</span>
+                </h2>
+                <ol class="space-y-3 text-sm sm:text-base font-bold text-zinc-900">
+                  <li class="flex items-start gap-3">
+                    <span class="w-7 h-7 rounded-full bg-zinc-900 text-amber-300 flex items-center justify-center shrink-0 text-sm">1</span>
+                    <span><strong>Pre-Task & Setup:</strong> Divide students into detective teams of 3–4, hand out one physical mystery case folder and one printed Detective Worksheet per group, and have students open the <em>Detective Glossary</em> on their devices.</span>
+                  </li>
+                  <li class="flex items-start gap-3">
+                    <span class="w-7 h-7 rounded-full bg-zinc-900 text-amber-300 flex items-center justify-center shrink-0 text-sm">2</span>
+                    <span><strong>Evidence Analysis:</strong> Students examine the physical Clue Cards and record three key clues on the worksheet's <em>Evidence Board</em> using English keywords.</span>
+                  </li>
+                  <li class="flex items-start gap-3">
+                    <span class="w-7 h-7 rounded-full bg-zinc-900 text-amber-300 flex items-center justify-center shrink-0 text-sm">3</span>
+                    <span><strong>Theory Discussion:</strong> Using <em>Detective Talk</em> sentence starters, teams evaluate Suspect and Theory cards, filling in the <em>Evidence For / Evidence Against</em> table.</span>
+                  </li>
+                  <li class="flex items-start gap-3">
+                    <span class="w-7 h-7 rounded-full bg-zinc-900 text-amber-300 flex items-center justify-center shrink-0 text-sm">4</span>
+                    <span><strong>Final Deduction & Vocabulary Check:</strong> Teams complete the <em>Final Deduction</em> box, compare their theory with the physical Reality card, and finish the matching 5-question <em>Vocabulary Challenge</em>.</span>
+                  </li>
+                </ol>
+              </div>
+            </div>
+
+            <!-- Right Column: Original Detective Worksheet Preview & Print/Download Controls -->
+            <div class="lg:col-span-5">
+              <div class="comic-box bg-white p-6 print-only-sheet">
+                <div class="flex items-center justify-between gap-2 mb-3 no-print">
+                  <span class="bg-green-300 text-zinc-900 border-2 border-zinc-900 text-xs font-extrabold px-3 py-1 rounded-full uppercase">
+                    Ready to Use
+                  </span>
+                  <span class="text-xs font-extrabold text-zinc-600">detective-worksheet-comic.pdf</span>
+                </div>
+
+                <h2 class="text-2xl font-bold text-zinc-900 mb-3 no-print">
+                  Detective Worksheet
+                </h2>
+
+                <!-- Visual Preview of detective-worksheet-comic.pdf -->
+                <div id="teacher-worksheet-document" class="border-3 border-zinc-900 rounded-2xl bg-amber-50 p-4 mb-5 shadow-[3px_3px_0px_#18181b]">
+                  <div class="bg-amber-300 border-2 border-zinc-900 rounded-xl px-3 py-2 text-center mb-3">
+                    <h3 class="comic-font text-lg sm:text-xl font-bold text-zinc-900 tracking-wide">
+                      DETECTIVE WORKSHEET
+                    </h3>
+                  </div>
+
+                  <!-- Case Metadata Fields -->
+                  <div class="grid grid-cols-2 gap-2 mb-3 text-xs font-extrabold">
+                    <div class="bg-white border-2 border-zinc-900 rounded-lg p-2">
+                      <span class="text-zinc-500 block text-[10px] uppercase">Case Number</span>
+                      <div class="h-3 border-b border-dashed border-zinc-400 mt-1"></div>
+                    </div>
+                    <div class="bg-white border-2 border-zinc-900 rounded-lg p-2">
+                      <span class="text-zinc-500 block text-[10px] uppercase">Case Name</span>
+                      <div class="h-3 border-b border-dashed border-zinc-400 mt-1"></div>
+                    </div>
+                    <div class="col-span-2 bg-white border-2 border-zinc-900 rounded-lg p-2">
+                      <span class="text-zinc-500 block text-[10px] uppercase">Mission</span>
+                      <div class="h-3 border-b border-dashed border-zinc-400 mt-1"></div>
+                    </div>
+                  </div>
+
+                  <!-- Evidence Board -->
+                  <div class="bg-sky-100 border-2 border-zinc-900 rounded-xl p-2.5 mb-3">
+                    <div class="font-extrabold text-xs text-zinc-900 uppercase">Evidence Board</div>
+                    <p class="text-[11px] font-bold text-zinc-700 mb-2">Write three clues. What do they tell you?</p>
+                    <div class="grid grid-cols-3 gap-1.5 text-[11px] font-bold">
+                      <div class="bg-white border-2 border-zinc-900 rounded-lg p-1.5">
+                        <span class="font-extrabold block text-sky-700">Clue 1</span>
+                        <span class="text-[10px] text-zinc-600 italic">This could mean...</span>
+                      </div>
+                      <div class="bg-white border-2 border-zinc-900 rounded-lg p-1.5">
+                        <span class="font-extrabold block text-sky-700">Clue 2</span>
+                        <span class="text-[10px] text-zinc-600 italic">This could mean...</span>
+                      </div>
+                      <div class="bg-white border-2 border-zinc-900 rounded-lg p-1.5">
+                        <span class="font-extrabold block text-sky-700">Clue 3</span>
+                        <span class="text-[10px] text-zinc-600 italic">This could mean...</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Suspects or Theories -->
+                  <div class="bg-purple-100 border-2 border-zinc-900 rounded-xl p-2.5 mb-3">
+                    <div class="font-extrabold text-xs text-zinc-900 uppercase">Suspects or Theories</div>
+                    <p class="text-[11px] font-bold text-zinc-700 mb-1.5">What evidence supports or goes against each idea?</p>
+                    <div class="bg-white border-2 border-zinc-900 rounded-lg overflow-hidden text-[10px] font-extrabold">
+                      <div class="grid grid-cols-3 bg-purple-200 border-b-2 border-zinc-900 px-2 py-1">
+                        <span>Suspect or Theory</span>
+                        <span>Evidence For</span>
+                        <span>Evidence Against</span>
+                      </div>
+                      <div class="grid grid-cols-3 divide-x divide-zinc-300 h-8">
+                        <div></div><div></div><div></div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Final Deduction -->
+                  <div class="bg-green-100 border-2 border-zinc-900 rounded-xl p-2.5">
+                    <div class="font-extrabold text-xs text-zinc-900 uppercase mb-1">Final Deduction</div>
+                    <div class="space-y-1 text-[11px] font-bold text-zinc-800 bg-white border-2 border-zinc-900 rounded-lg p-2">
+                      <div>We think... <span class="inline-block w-24 border-b border-zinc-400"></span></div>
+                      <div>Clue shows that... <span class="inline-block w-20 border-b border-zinc-400"></span></div>
+                      <div>Our final answer is... <span class="inline-block w-16 border-b border-zinc-400"></span></div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="flex flex-col sm:flex-row gap-3 no-print">
+                  <button
+                    type="button"
+                    onclick="downloadOriginalWorksheetPdf()"
+                    class="comic-btn flex-1 py-3 px-4 bg-green-300 hover:bg-green-200 text-zinc-900 font-bold text-sm text-center flex items-center justify-center gap-2"
+                  >
+                    <span aria-hidden="true">⬇️</span>
+                    <span>Download Worksheet</span>
+                  </button>
+
+                  <button
+                    type="button"
+                    onclick="printWorksheet()"
+                    class="comic-btn flex-1 py-3 px-4 bg-sky-300 hover:bg-sky-200 text-zinc-900 font-bold text-sm flex items-center justify-center gap-2"
+                  >
+                    <span aria-hidden="true">🖨️</span>
+                    <span>Print Worksheet</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      `;
+    }
+
+    function generateWorksheetPdfBlob() {
+      const pdfContent = `%PDF-1.4
+1 0 obj
+<< /Type /Catalog /Pages 2 0 R >>
+endobj
+2 0 obj
+<< /Type /Pages /Kids [3 0 R] /Count 1 >>
+endobj
+3 0 obj
+<< /Type /Page /Parent 2 0 R /Resources << /Font << /F1 4 0 R /F2 5 0 R >> >> /MediaBox [0 0 612 792] /Contents 6 0 R >>
+endobj
+4 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold >>
+endobj
+5 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>
+endobj
+6 0 obj
+<< /Length 2550 >>
+stream
+2 w
+0.99 0.84 0.04 rg
+36 710 540 46 re B
+0 0 0 rg
+BT /F1 20 Tf 195 726 Td (DETECTIVE WORKSHEET) Tj ET
+1 1 1 rg
+36 655 262 45 re B
+314 655 262 45 re B
+36 602 540 45 re B
+0 0 0 rg
+BT /F1 11 Tf 46 684 Td (Case Number:) Tj ET
+BT /F1 11 Tf 324 684 Td (Case Name:) Tj ET
+BT /F1 11 Tf 46 631 Td (Mission:) Tj ET
+0.85 0.95 1 rg
+36 420 540 170 re B
+0 0 0 rg
+BT /F1 13 Tf 46 570 Td (EVIDENCE BOARD) Tj ET
+BT /F2 10 Tf 46 554 Td (Write three clues. What do they tell you?) Tj ET
+1 1 1 rg
+46 432 166 112 re B
+223 432 166 112 re B
+400 432 166 112 re B
+0 0 0 rg
+BT /F1 11 Tf 54 528 Td (Clue 1) Tj ET
+BT /F2 9 Tf 54 475 Td (This could mean...) Tj ET
+BT /F1 11 Tf 231 528 Td (Clue 2) Tj ET
+BT /F2 9 Tf 231 475 Td (This could mean...) Tj ET
+BT /F1 11 Tf 408 528 Td (Clue 3) Tj ET
+BT /F2 9 Tf 408 475 Td (This could mean...) Tj ET
+0.93 0.88 1 rg
+36 210 540 198 re B
+0 0 0 rg
+BT /F1 13 Tf 46 388 Td (SUSPECTS OR THEORIES) Tj ET
+BT /F2 10 Tf 46 372 Td (What evidence supports or goes against each idea?) Tj ET
+1 1 1 rg
+46 222 520 140 re B
+0 0 0 rg
+46 338 520 0 m 566 338 l S
+46 299 520 0 m 566 299 l S
+46 260 520 0 m 566 260 l S
+219 222 m 219 362 l S
+392 222 m 392 362 l S
+BT /F1 10 Tf 56 346 Td (Suspect or Theory) Tj ET
+BT /F1 10 Tf 229 346 Td (Evidence For) Tj ET
+BT /F1 10 Tf 402 346 Td (Evidence Against) Tj ET
+0.86 0.98 0.88 rg
+36 42 540 156 re B
+0 0 0 rg
+BT /F1 13 Tf 46 178 Td (FINAL DEDUCTION) Tj ET
+1 1 1 rg
+46 54 520 114 re B
+0 0 0 rg
+BT /F1 11 Tf 56 146 Td (We think...) Tj ET
+125 144 m 552 144 l S
+BT /F1 11 Tf 56 108 Td (Clue shows that...) Tj ET
+160 106 m 552 106 l S
+BT /F1 11 Tf 56 70 Td (Our final answer is...) Tj ET
+178 68 m 552 68 l S
+endstream
+endobj
+xref
+0 7
+0000000000 65535 f 
+0000000009 00000 n 
+0000000058 00000 n 
+0000000115 00000 n 
+0000000229 00000 n 
+0000000297 00000 n 
+0000000360 00000 n 
+trailer
+<< /Size 7 /Root 1 0 R >>
+startxref
+2962
+%%EOF`;
+      return new Blob([pdfContent], { type: "application/pdf" });
+    }
+
+    function downloadOriginalWorksheetPdf() {
+      const blob = generateWorksheetPdfBlob();
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "detective-worksheet-comic.pdf";
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      setTimeout(() => URL.revokeObjectURL(url), 2000);
+      showToast("Downloading detective-worksheet-comic.pdf...");
+    }
+
+    function printWorksheet() {
+      window.print();
+    }
+
+    /* ============================================================================
+       9. HTML ESCAPING HELPERS
+    ============================================================================ */
+    function escapeHtml(str) {
+      return String(str)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#39;");
+    }
+
+    function escapeAttr(str) {
+      return String(str)
+        .replace(/\\/g, "\\\\")
+        .replace(/'/g, "\\'")
+        .replace(/"/g, "&quot;");
+    }
+
+    /* ============================================================================
+       10. INITIALIZE APPLICATION ON WINDOW LOAD
+    ============================================================================ */
+    window.addEventListener("DOMContentLoaded", () => {
+      renderApp();
+    });
+  </script>
+</body>
+</html>
